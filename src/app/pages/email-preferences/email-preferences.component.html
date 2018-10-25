@@ -1,0 +1,56 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="container section-content private-pages-sides-wrap">
+      <div class="row no-gutters">
+        <div class="col-12 col-xl-3">
+          <app-user-menu></app-user-menu>
+        </div>
+        <div class="col-12 col-xl-9">
+          <div class="private-pages-right-side-wrap">
+            
+            <div class="section-update-profile mt-xl-5">
+              <div class="successful-update-msg" *ngIf="showUpdateSuccessfullMsg">Your preferences have been updated.</div>
+              <form #f="ngForm" class="may-load email-preferences-form" [ngClass]="{'is-loading': isLoading}">
+                <div class="errors-group d-inline-block p-1" *ngIf="errors?.length">
+                  <ul class="m-0">
+                    <li class="error-text" *ngFor="let error of errors">{{error}}</li>
+                  </ul>
+                </div>
+                <span *ngIf="isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                <fieldset [disabled]="isLoading">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Subject</th>
+                        <th>Send me <br>notification</th>
+                      </tr>
+                    </thead>
+                    <tr *ngFor="let field of objectKeys(formFields)">
+                      <td><label for="{{formFields[field].key}}">{{formFields[field].name}}</label></td>
+                      <td><input type="checkbox" [name]="formFields[field].key" [id]="formFields[field].key" [(ngModel)]="formFields[field].active"><label for="{{formFields[field].key}}">&nbsp;</label></td>
+                    </tr>
+                  </table>
+                  
+                  <button type="submit" (click)="onSubmit(f)" class="btn">Update Notification Settings</button>
+                </fieldset>
+  
+  
+                
+  
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>

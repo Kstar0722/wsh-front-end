@@ -1,0 +1,59 @@
+<div class="text-white container position-relative">
+    <img class="footer-logo" src="/assets/images/wshful-logo-white.png" alt="" />
+    <div class="row justify-content-between">
+        <div class="col-md-4">
+            <h4>Wshful</h4>
+            <div class="position-relative">
+                <div [innerHTML]="staticData.staticContentData.footerLeftInfo.response?.text"></div>
+                <span *ngIf="staticData.staticContentData.footerLeftInfo.isRequesting" class="icon-loader color-white"><fa name="circle-o-notch" size="1x" animation="spin"></fa></span>
+            </div>
+        </div>
+        <div class="col-md-auto col-sm-6">
+            <h4>Wshful</h4>
+            <ul class="list-reset">
+                <li><a routerLink="/">Home</a></li>
+                <li><a routerLink="/how-it-works">How it works?</a></li>
+                <li><a routerLink="/pricing">Subscriptions plans</a></li>
+                <li><a routerLink="/support">Support</a></li>
+                <li><a routerLink="/terms-and-conditions">Terms & Conditions</a></li>
+                <li><a routerLink="/privacy-policy">Privacy policy</a></li>
+            </ul>
+            
+        </div>
+        <div class="col-md-auto col-sm-6">
+            <h4>Your Lotteries</h4>
+            <ul class="list-reset">
+                <li><a routerLink="/my-tickets">Your tickets</a></li>
+                <li><a routerLink="/my-balance">Your winnings</a></li>
+                <li><a routerLink="/my-balance/withdraw">Withdraw</a></li>
+                <li><a routerLink="/refer-a-friend">Invite a friend</a></li>
+                <li><a routerLink="/my-referrals">Your referrals</a></li>
+            </ul>
+        </div>
+        <!-- <div class="col-lg-3 col-md-4 col-sm-6">
+            <h4>Sign up for email</h4>
+            <p class="mt-0 mb-1">Receive exclusive offers, jackpot alerts, new game announcements, and more!</p>
+            <form class="footer-subscribe-form">
+                <input class="w-100" type="email" placeholder="Your email address">
+                <input class="w-100" type="submit" value="Get Access">
+            </form>
+        </div> -->
+        <div class="col-sm-12 mt-3 mt-lg-0">
+            <ul class="list-reset row justify-content-center justify-content-md-start footer-social-links">
+                <li class="col-auto"><a href="https://www.youtube.com/channel/UCaczZaJZ4vqtO6C05Tz-0WQ" target="_blank"><fa name="youtube-play"></fa></a></li>
+                <li class="col-auto"><a href="https://www.facebook.com/Wshful/" target="_blank"><fa name="facebook-official"></fa></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="text-center">
+        <p class="plus-18 mb-1"><img src="/assets/images/plus-18.jpg" alt="18+" class="plus-18-image" /></p>
+        <p class="gambleaware mt-1"><a target="_blank" href="https://www.begambleaware.org/"><img src="/assets/images/gamble-aware.png" alt="www.begambleaware.org" class="gambleaware-image" /></a></p>
+        <p class="creditcards"><img src="/assets/images/creditcards.png" alt="" class="creditcards-image" /></p>
+        <div class="position-relative">
+            <div [innerHTML]="staticData.staticContentData.footerBottomInfo.response?.text" class="footer-disclaimer"></div>
+            <span *ngIf="staticData.staticContentData.footerBottomInfo.isRequesting" class="icon-loader color-white"><fa name="circle-o-notch" size="1x" animation="spin"></fa></span>
+        </div>
+    </div>
+    
+</div>
+

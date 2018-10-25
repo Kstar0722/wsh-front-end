@@ -1,0 +1,9 @@
+<div [ngClass]="{'show-mobile-menu': pageTplData.mobileMenuVisible, 'header-fixed': pageTplData.fixedHeader}">
+    <div [ngClass]="pageTplData.pageClass">
+        <router-outlet></router-outlet>
+        <app-offers-popup [selectedOffer]="selectedOfferParam"></app-offers-popup>
+        
+    </div>
+    
+
+</div>

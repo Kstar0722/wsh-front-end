@@ -1,0 +1,87 @@
+<div #topheaderplaceholderelem></div>
+<div class="header" #topheaderelem>
+    <div class="header-social-links">
+        <ul class="list-reset">
+            <li>
+                <a href="https://www.youtube.com/channel/UCaczZaJZ4vqtO6C05Tz-0WQ" target="_blank">
+                    <fa name="youtube-play"></fa>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/Wshful/" target="_blank">
+                    <fa name="facebook-official"></fa>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container mobile-float-up">
+        <div class="row no-gutters text-white">
+            <div class="col-3 col-sm-3 col-md-2 col-xl-3">
+                <a routerLink="">
+                    <img src="/assets/images/wshful-logo-white.png" alt="Wshful logo" class="header-logo-image" />
+                </a>
+                <div class="header-slogan text-center">The Global
+                    <br />Lottery Syndicate</div>
+            </div>
+            <div class="col-9 col-sm-9 col-md-10 col-xl-9">
+                <div class="row no-gutters align-items-center justify-content-end">
+                    <div class="col-auto col-lg-12 order-1 order-lg-3">
+                        <app-header-account-info></app-header-account-info>
+                        
+                    </div>
+                    <div class="col-auto col-lg-12 order-2 order-lg-2 mobile-menu-toggle-wrap">
+                        <span class="mobile-menu-toggle" (click)="menuToggle()">
+                            <fa name="bars"></fa>
+                        </span>
+                    </div>
+                    <div class="col-12 order-3 order-lg-1">
+                        
+                        <div class="relative">
+                            <div class="nav-panel text-right text-lg-left">
+                                <div class="row">
+                                    <div class="col-12 order-3 order-lg-1">
+                                        <div class="header-info row justify-content-end align-items-center no-gutters">
+                                            <span class="col-lg-auto header-address text-uppercase">International House, 24 Holborn Viaduct, London, United Kingdom</span>
+
+                                            <span class="col-lg-auto text-separator" *ngIf="currencyServiceRef.showCurrencySelector">|</span>
+                                            <span class="col-lg-auto header-currency" *ngIf="currencyServiceRef.showCurrencySelector">
+                                                <app-currency-selector></app-currency-selector>
+                                            </span>
+
+                                            <span class="col-lg-auto text-separator">|</span>
+                                            <span class="col-lg-auto header-advice text-uppercase">
+                                                <strong>Play responsibly</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 order-2 order-lg-1">
+                                        <nav class="header-nav list-reset">
+                                            <app-navigation></app-navigation>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-end text-white">
+            <div class="col-8 col-sm-9 col-md-10 col-lg-12">
+                <div class="page-title-wrapper">
+                    <div class="page-specific-header-info text-right">{{textAbovePageTitle}}</div>
+                    <h1 class="page-title text-right text-glued-b" *ngIf="!replacePageTitle" [ngClass]='{"has-page-specific-info-above":textAbovePageTitle}'>{{pageTplData.pageTitle}}</h1>
+                    <h1 class="page-title text-right text-glued-b" *ngIf="!!replacePageTitle" [ngClass]='{"has-page-specific-info-above":textAbovePageTitle}'[innerHTML]="replacePageTitle"></h1>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    
+
+</div>

@@ -1,0 +1,83 @@
+
+
+<div class="syndicate-comparison-component syndicate-comparison-component-desktop">
+  <table width="100%" class="main-table">
+    <thead>
+      <tr><th *ngFor="let headerName of getMainHeaders(lotteryDataRows[0])"><span><span class="main-header-item">{{headerName}}</span></span></th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lotteryDataRow of lotteryDataRows">
+        <td><span><span class="border-bottom">{{lotteryDataRow.lottery.lotteryName}} <br> <strong>Jackpot <span [innerHTML]="jackpotServiceRef.jackpotsNormalized.lotteries[lotteryDataRow.lottery.jackpotKey].formatted"></span></strong></span></span></td>
+        <td><span><span class="border-bottom">{{lotteryDataRow.withOneTicket.odds}}</span></span></td>
+        <td>
+          <span>
+            <table width="100%" class="child-table">
+              <thead>
+                <tr>
+                  <th *ngFor = "let plan of lotteryDataRow.withSyndicate.plans"><span class="child-cell-spacer"><span class="child-header-item">{{plan.planName}}</span></span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td *ngFor = "let plan of lotteryDataRow.withSyndicate.plans">
+                    <span class="child-cell-spacer">
+                      <span *ngIf="plan.refferals">
+                        <span class="child-header-item">{{plan.refferals}} <span *ngIf="plan.refferals == 1">Referral</span><span *ngIf="plan.refferals > 1">Referrals</span></span>
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td *ngFor = "let plan of lotteryDataRow.withSyndicate.plans"><span class="child-cell-spacer"><span class="border-bottom">{{plan.odds}}</span></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  
+  
+<div *ngIf="condensedStructure" class="text-center syndicate-comparison-component syndicate-comparison-component-mobile">
+  <label>
+    Please select lottery to see more information <br>
+    <select #lotterySelect (change)="showSelected(lotterySelect.value, lotteryDataRows)" class="w-100 mt-1">
+      <option *ngFor="let lotteryDataRow of lotteryDataRows; let i = index" [value]="i">{{lotteryDataRow.lottery.lotteryName}}</option>
+    </select>
+  </label>
+  <div>
+      <div class="main-header-item">{{condensedStructure.lottery.headerName}}</div>
+      <div class="lottery-info-body">{{condensedStructure.lottery.lotteryName}} <br> <span [innerHTML]="jackpotServiceRef.jackpotsNormalized.lotteries[condensedStructure.lottery.jackpotKey].formatted"></span></div>
+  </div>
+  <div>
+      <div class="main-header-item">{{condensedStructure.withOneTicket.headerName}}</div>
+      <div class="lottery-info-body">{{condensedStructure.withOneTicket.odds}}</div>
+  </div>
+  <div>
+    <div class="main-header-item">{{condensedStructure.withSyndicate.headerName}}</div>
+    <div class="lottery-info-body">
+      <table class="child-table">
+        <thead>
+          <tr>
+            <th *ngFor = "let plan of condensedStructure.withSyndicate.plans"><span class="child-cell-spacer"><span class="child-header-item">{{plan.planName}}</span></span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td *ngFor = "let plan of condensedStructure.withSyndicate.plans">
+              <span *ngIf="plan.refferals">
+                  <span class="child-cell-spacer"><span class="child-header-item">{{plan.refferals}} <span *ngIf="plan.refferals == 1">Referral</span><span *ngIf="plan.refferals > 1">Referrals</span></span></span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td *ngFor = "let plan of condensedStructure.withSyndicate.plans"><span class="child-cell-spacer">{{plan.odds}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+</div>

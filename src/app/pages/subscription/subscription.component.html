@@ -1,0 +1,84 @@
+  <div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="section section-register">
+      <div class="container">
+        <div class="section-content">
+          <div class="position-relative forms-wrapper">
+
+              <span *ngIf="authServiceRef.user == null" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+              <div class="row" *ngIf="authServiceRef.user != null" >
+                <div class="col-12 position-static personal-info-form" [ngClass]='{"col-lg-8": profileNeedsFirstLastName(), "col-lg-6": !profileNeedsFirstLastName()}'>
+                  
+                  <div class="form-row form-row-errors errors-group" *ngIf="errors.length">
+                    <ul class="m-0">
+                      <li *ngFor="let error of errors error-text">{{error}}</li>
+                    </ul>
+                  </div>
+                  <div class="position-relative">
+                    <app-update-user-form #uu
+                      *ngIf="authServiceRef.user != null && needsProfileUpdate()"
+                      [showSubmitButton]='false'
+                      submitBtnLabel="Save user info" 
+                      [disabledIf]="plansServiceRef.plansLoading || makePaymentWaiting"
+                      defaultPhonePrefix="+44"
+                      (done)="goToPayment()"
+                    ></app-update-user-form>
+                    <div class="user-info" *ngIf="authServiceRef.user != null && !needsProfileUpdate()">
+
+                      <div class="details-box">
+                        <div class="head">Your Account</div>
+                        <div class="panel">
+                          <div><span class="label">Name: </span>{{authServiceRef.user.first_name}} {{authServiceRef.user.last_name}}</div>
+                          <div><span class="label">Email: </span>{{authServiceRef.user.email}}</div>
+                        </div>
+                      </div>
+
+                      <div class="details-box">
+                        <div class="head">Your Details</div>
+                        <div class="panel">
+                          <div *ngIf="authServiceRef.user.address1 != null && authServiceRef.user.address1 != ''">
+                            <div><span class="label">Address: </span>{{authServiceRef.user.address1}}</div>
+                          </div>
+                          <div *ngIf="authServiceRef.user.city != null && authServiceRef.user.city != ''">
+                            <div><span class="label">City: </span>{{authServiceRef.user.city}}</div>
+                          </div>
+                          <div *ngIf="authServiceRef.user.country != null">
+                            <div><span class="label">Country: </span>{{authServiceRef.user.country.name}}</div>
+                          </div>
+                          <div *ngIf="authServiceRef.user.zip_code != null && authServiceRef.user.zip_code != ''"><span class="label">Postcode: </span>{{authServiceRef.user.zip_code}}</div>
+                          <div *ngIf="authServiceRef.user.phone1 != null && authServiceRef.user.phone1 != ''"><span class="label">Phone: </span>{{authServiceRef.user.phone_prefix}} {{authServiceRef.user.phone1}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 mt-3 mt-lg-0" [ngClass]='{"col-lg-4": profileNeedsFirstLastName(), "col-lg-6": !profileNeedsFirstLastName()}'>
+                  <app-order-details #od
+                    [selectedPlanName]="selectedPlanName"
+                    [disabledIf]="plansServiceRef.plansLoading || !authServiceRef.isLoggedIn() || authServiceRef.user == null || makePaymentWaiting"
+                    (done)="onOdSubmit()"
+                    [showVoucherField]="showVoucherField" 
+                  ></app-order-details>
+                  
+                </div>
+              </div>
+
+            </div>
+
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>
+    
+  

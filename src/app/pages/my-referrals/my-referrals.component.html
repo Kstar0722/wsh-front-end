@@ -1,0 +1,145 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <!-- <div class="section secondary-nav">
+        <div class="container">
+            <div class="section-content list-reset">
+                <ul class="row justify-content-end no-gutters level-1">
+                    <li class="col-12 col-lg-auto active-link-group">
+    
+                        <ul class="level-2">
+                            
+                            <li style="max-width: 33.3333%;">
+    
+                                <a class="" routerLink="/refer-a-friend">
+                                    Refer a Friend
+                                </a>
+    
+                            </li>
+                            <li style="max-width: 33.3333%;">
+    
+                                <a class="active-link" routerLink="/my-referrals">
+                                    My Referrals
+                                </a>
+    
+                            </li>
+                            <li style="max-width: 33.3333%;">
+    
+                                <a class="" routerLink="/banners">
+                                    Banners
+                                </a>
+    
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div> -->
+  <div class="container section-content private-pages-sides-wrap">
+    <div class="row no-gutters">
+      <div class="col-12 col-xl-3">
+        <app-user-menu></app-user-menu>
+      </div>
+      <div class="col-12 col-xl-9">
+        <div class="private-pages-right-side-wrap">
+          <!-- <div class="section section-referrals-intro">
+            <div class="section-content pt-0 text-center">
+                <p><img src="/assets/images/title-my-referrals.png" alt=""></p>
+                <p>Below you can see your referrals and their status.</p>
+            </div>
+          </div> -->
+          <div class="section section-referrals-table">
+
+            <div class="position-relative">
+              <span *ngIf="myReferralsServiceRef.isWaitingForResponse" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+              <div *ngIf="myReferralsServiceRef.referralsCount == 0 && !myReferralsServiceRef.isWaitingForResponse" class="text-center referrals-list-empty">
+                <div class="mb-4 mb-xl-5 pb-xl-5 mt-xl-5">
+                  <div class="title">My referrals list is empty.</div>
+                  <div class="subtitle">Check out <a routerLink="/refer-a-friend">refer a friend</a> page and get familiar how to get referrals. </div>
+                </div>
+                <div class="title">Get 50 FREE PowerBall lines when you refer a friend.</div>
+                <div class="position-relative section-how-referrals-work p-0 m-0" *ngIf = "authService?.isLoggedIn()">
+                  <span *ngIf="!authService?.user" class="icon-loader"><fa name="circle-o-notch" size="3x" animation="spin"></fa></span>
+                  <div class="copy-referral-link-outer p-0 m-0">
+                    <div class="copy-referral-link may-load" [class.is-loading]="!authService?.user">
+                      <div class="title">this is your personal referral link</div>
+                      <div class="row no-gutters">
+                        <div class="col"><input #referralLinkInput [value]="origin + '/invite/' + authService?.user?.refer_url_id" type="text" readonly class="w-100"></div>
+                        <div class=""><button class="col-auto btn w-100" (click)="copyLinkToClipboard(referralLinkInput)">Copy link</button></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="myReferralsServiceRef.referralsCount != 0">
+      
+                <table class="table-custom-1 table--responsive may-load" [class.is-loading]="myReferralsServiceRef.isWaitingForResponse">
+                  <thead>
+                    <tr>
+                      <th>Affiliate</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Your Bonus</th>
+                      <th>Affiliate Bonus</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of myReferralsServiceRef.referralsRowsFiltered; let dataIndex = index">
+                      <td data-heading="Affiliate">
+                        {{row.referral_name}}
+                      </td>
+                      <td data-heading="Date">
+                        {{row.registered_at | unifyDate | date:"MM/dd/yyyy"}}
+                      </td>
+                      <td data-heading="Status"> 
+                        <span *ngIf="!row.bonus_applied_at" class="status-pending">Pending Payment</span>
+                        <span *ngIf="row.bonus_applied_at" class="status-active">Active</span> 
+                        <span *ngIf="!row.bonus_applied_at" class="d-block">
+                          <small *ngIf="!row.reminder_sent_at">(<a (click)="myReferralsServiceRef.sendReminder(row.id, dataIndex)">Send reminder</a>)</small>
+                          <small *ngIf="row.reminder_sent_at">(reminder is sent - {{row.reminder_sent_at}})</small>
+                        </span>
+                      </td>
+                      <td data-heading="Your Bonus">
+                        <span *ngIf="row.bonus_applied_at">{{row.bonus_lines_referree}} Lines</span>
+                        <span *ngIf="!row.bonus_applied_at">-</span> 
+                      </td>
+                      <td data-heading="Affiliate Bonus">
+                        <span *ngIf="row.bonus_applied_at">{{row.bonus_lines_referral}} Lines</span>
+                        <span *ngIf="!row.bonus_applied_at">-</span> 
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="mt-2" *ngIf="Math.ceil((myReferralsServiceRef.referralsCount)/myReferralsServiceRef.pagination.perPage) > 1">
+                  <ul class="pagination list-reset row no-gutters justify-content-end">
+                    <li (click)="myReferralsServiceRef.pageFirst()" [class.active]="myReferralsServiceRef.pagination.currentPage > 1"><fa name="angle-double-left"></fa></li>
+                    <li (click)="myReferralsServiceRef.pagePrev()" [class.active]="myReferralsServiceRef.pagination.currentPage > 1"><fa name="angle-left"></fa></li>
+                    <li
+                      *ngFor="let page of array0to(myReferralsServiceRef.getMaxPages()); let i = index;" 
+                      (click)="myReferralsServiceRef.changePageTo(i+1)" [class.active]="myReferralsServiceRef.pagination.currentPage == i+1"
+                      class="col-auto"
+                    >{{i+1}}</li>
+                    <li (click)="myReferralsServiceRef.pageNext()" [class.active]="myReferralsServiceRef.pagination.currentPage < myReferralsServiceRef.getMaxPages()"><fa name="angle-right"></fa></li>
+                    <li (click)="myReferralsServiceRef.pageLast()" [class.active]="myReferralsServiceRef.pagination.currentPage < myReferralsServiceRef.getMaxPages()"><fa name="angle-double-right"></fa></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>

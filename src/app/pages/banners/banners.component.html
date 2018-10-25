@@ -1,0 +1,168 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="container section-content private-pages-sides-wrap">
+      <div class="row no-gutters">
+        <div class="col-12 col-xl-3">
+          <app-user-menu></app-user-menu>
+        </div>
+        <div class="col-12 col-xl-9">
+          <div class="private-pages-right-side-wrap">
+            <div class="section-content pt-0 text-center">
+              <p><img src="/assets/images/title-banners.png" alt=""></p>
+              <p>Use the banners below to get more referrals</p>
+            </div>
+            <div class="section section-the-banners">
+              <div class="container position-relative">
+                <span *ngIf="!authServiceRef.user" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                <div class="section-content banner-style-row pt-0" *ngFor="let bannerStyle of bannerStyles; let styleIndex = index;">
+                  
+                  <div *ngIf="!!authServiceRef.user" class="row">
+                    <div class="cell col-12 col-md-5">
+                      <div class="banner-box-image">
+                        <img src="{{bannerStyle.preview_image}}" alt="">
+                      </div>
+                    </div>
+                    <div class="cell col-12 col-md-7">
+                      <div class="banner-box-options">
+                        <div class="row justify-content-between">
+                          <div class="col-lg-6">
+                            <label for="banner-1-size">Choose banner size:</label>
+                          </div>
+                          <div class="col-lg-5 text-right">
+                            <select id="banner-1-size" [(ngModel)]="bannerStyle.vars.selectedBannerIndex">
+                              <option *ngFor="let banner of bannerStyle.banners; let i = index" value="{{i}}">{{banner.type}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <textarea 
+                          readonly 
+                          #bannerCodeTextarea 
+                          class="w-100" 
+                          value='{{bannerStyle.banners[bannerStyle.vars.selectedBannerIndex].code}}'
+                        ></textarea>
+                        
+                        <div class="row justify-content-end">
+                          <div class="col-lg-4 text-right"><button class="btn" (click)="copyCodeToClipboard(bannerCodeTextarea)">Copy</button></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>
+
+
+
+<!-- old design -->
+
+<!-- <div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+    <div class="section secondary-nav">
+        <div class="container">
+            <div class="section-content list-reset">
+                <ul class="row justify-content-end no-gutters level-1">
+                    <li class="col-12 col-lg-auto active-link-group">
+    
+                        <ul class="level-2">
+                            
+                            <li class="active-link-group" style="max-width: 33.3333%;">
+    
+                                <a class="" routerLink="/refer-a-friend">
+                                    Refer a Friend
+                                </a>
+    
+                            </li>
+                            <li style="max-width: 33.3333%;">
+    
+                                <a class="" routerLink="/my-referrals">
+                                    My Referrals
+                                </a>
+    
+                            </li>
+                            <li class="active-link-group" style="max-width: 33.3333%;">
+    
+                                <a class="active-link" routerLink="/banners" class="active-link">
+                                    Banners
+                                </a>
+    
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+  <div class="section section-get-banners">
+    <div class="container">
+      <div class="section-content pt-0 text-center">
+         <p><img src="/assets/images/title-banners.png" alt=""></p>
+         <p>Use the banners below to get more referrals</p>
+      </div>
+    </div>
+  </div>
+  <div class="section section-the-banners">
+    <div class="container position-relative">
+      <span *ngIf="!authServiceRef.user" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+      <div class="section-content banner-style-row pt-0" *ngFor="let bannerStyle of bannerStyles; let styleIndex = index;">
+        
+        <div *ngIf="!!authServiceRef.user" class="row">
+          <div class="cell col-12 col-md-6">
+            <div class="banner-box-image">
+              <img src="/assets/images/banner-1-preview.jpg" alt="">
+            </div>
+          </div>
+          <div class="cell col-12 col-md-6">
+            <div class="banner-box-options">
+              <div class="row justify-content-between">
+                <div class="col-lg-6">
+                  <label for="banner-1-size">Choose banner size:</label>
+                </div>
+                <div class="col-lg-5 text-right">
+                  <select id="banner-1-size" [(ngModel)]="bannerStyle.vars.selectedBannerIndex">
+                    <option *ngFor="let banner of bannerStyle.banners; let i = index" value="{{i}}">{{banner.resolution}}</option>
+                  </select>
+                </div>
+              </div>
+              <textarea 
+                readonly 
+                #bannerCodeTextarea 
+                class="w-100" 
+                value='<a href="{{origin}}/invite/{{authServiceRef.user.refer_url_id}}">{{bannerStyle.banners[bannerStyle.vars.selectedBannerIndex].html}}</a>'
+              ></textarea>
+              
+              <div class="row justify-content-end">
+                <div class="col-lg-4 text-right"><button class="btn" (click)="copyCodeToClipboard(bannerCodeTextarea)">Copy</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div> -->

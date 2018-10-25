@@ -1,0 +1,247 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="container section-content private-pages-sides-wrap">
+      <div class="row no-gutters">
+        <div class="col-12 col-xl-3">
+          <app-user-menu></app-user-menu>
+        </div>
+        <div class="col-12 col-xl-9">
+          <div class="private-pages-right-side-wrap">
+            <div *ngIf="!withdrawFormActive">
+              <div class="section position-relative" *ngIf="!detailsActive">
+                <span *ngIf="authService.requestingCurrentSessionData" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                <div class="my-balance-details may-load" [class.is-loading] = "authService.requestingCurrentSessionData">
+                  <div class="title">Balance</div>
+                  <div class="amount">{{authService.user?.balance | number : "1.0-2"}} GBP</div>
+                  <div class="amount-small">{{authService.user?.balance | number : "1.0-2"}} GBP</div>
+                  <div><button [disabled]="authService.requestingCurrentSessionData" class="withdraw-btn btn btn-big-green" (click)="showwithdrawForm()">Withdraw</button></div>
+                </div>
+                <div class="position-relative">
+                  <span *ngIf="isLoadingHistory" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                  <div *ngIf="!!historyData.length">
+                    <table class="table-custom-1 table--responsive may-load my-results-table may-load" [class.is-loading] = "isLoadingHistory" >
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Action</th>
+                          <th>Balance change</th>
+                          <th>Balance after</th>
+                          <th>View</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr (click)="showDetails(row.internal_data, row.internal_type)" *ngFor="let row of historyData" [class.no-hover-effect]="row.internal_type != 'lineResult1'"> 
+                          <td data-heading="Date">
+                            {{row.datetime | unifyDate | date: 'mediumDate'}}
+                          </td>
+                          <td data-heading="Action">
+                            {{row.title}}
+                          </td>
+                          <td data-heading="Balance change">
+                            {{row.balance_change | number: '1.2-2'}} GBP
+                          </td>
+                          <td data-heading="Balance after"> 
+                              {{row.balance_after | number: '1.2-2'}} GBP
+                          </td>
+                          <td data-heading="View"> 
+                            <span *ngIf="row.internal_type == 'lineResult1'">View draw ></span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="mt-2 text-center"><a class="action-link" (click)="loadMoreHistory()" *ngIf="loadMoreActive">Load more</a></div>
+                  </div>
+                  
+                </div>
+              </div>
+              <div class="section" *ngIf="detailsActive">
+                <div class="text-right mb-3"><a (click)="hideDetails()" class="action-link"><fa name="chevron-left"></fa>Go back to my balance </a></div>
+                <div class="position-relative">
+                  <span *ngIf="detailsLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                  <div class="may-load" [class.is-loading]="detailsLoading">
+                    <table class="table-custom-1 table--responsive result-details-table mb-3">
+                      <thead>
+                        <tr>
+                          <th>Lottery</th>
+                          <th>Draw date</th>
+                          <th>Best Result</th>
+                          <th>Total Wins</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-heading="Lottery">{{detailsData?.draw.lottery_name}}</td>
+                          <td data-heading="Draw date">{{detailsData?.draw.local_datetime | unifyDate | date: 'mediumDate'}}</td>
+                          <td data-heading="Best Result"> 
+                            {{detailsData?.lines[getFirstBestResultLineIndex(detailsData?.lines)].match}}
+                          </td>
+                          <td data-heading="Total Wins">{{getTotalTicketPrizes(detailsData?.lines) | number: '1.2-2'}} {{detailsData?.draw.currency}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="result-details-cards">
+                      <div class="card-bg">
+                        <div class="heading">
+                          <div class="row justify-content-between">
+                            <div class="col-auto"><div class="title">Draw Result</div></div>
+                            <div class="col-auto">
+                              <a class="action-link" [appPopUp]='{openContentOnClick: true}'>
+                                See prize list <fa name="chevron-right"></fa>
+                                <div class="app-pop-up">
+                                  <div class="popup-wrap">
+                                    <div class="overflow">
+                                      <div class="prize-list-wrap">
+                                        <div class="title">Prize list - {{detailsData?.draw.lottery_name}} {{detailsData?.draw.local_datetime | unifyDate | date: 'mediumDate'}}</div>
+                                        <table class="table-custom-1 table--responsive">
+                                          <thead>
+                                            <tr>
+                                              <th>Matches</th>
+                                              <th>{{detailsData?.draw.special_name}}</th>
+                                              <th>Win</th>
+                                              <th>Winners</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let prizeObj of detailsData?.draw.matches">
+                                              <td data-heading="Matches">{{prizeObj?.numbers_match}}</td>
+                                              <td [attr.data-heading]="detailsData?.draw.special_name">{{prizeObj?.specials_match}}</td>
+                                              <td data-heading="Win">{{prizeObj?.prize}} USD</td>
+                                              <td data-heading="Winners">{{prizeObj?.winners}}</td>
+                                            </tr>
+                                            
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    <span class="close close-box">&times;</span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="draw-line {{detailsData?.draw.lottery_type}} mb-2">
+                            <span 
+                            *ngFor = "let ball of detailsData?.draw.result.balls" 
+                            class="result-ball"
+                            [ngClass] = '{match: true, special: ball.special}'
+                          >{{ball.number}}</span>
+                        </div>
+                      </div>
+                      <div class="card-bg">
+                        <div class="heading">
+                          <div class="title">Your Result</div>
+                        </div>
+                        <p class="d-md-none">Syndicate {{detailsData?.syndicate.name}}</p>
+                        <table class="your-result-details-table table--responsive">
+                          <thead>
+                            <tr>
+                              <th class="title">Syndicate {{detailsData?.syndicate.name}}</th>
+                              <th class="title">Matches</th>
+                              <th class="title">{{detailsData?.draw.special_name}}</th>
+                              <th class="title">Win</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let line of detailsData?.lines">
+                              <td>
+                                <div class="draw-line {{detailsData?.draw.lottery_type}}">
+                                    <span 
+                                    *ngFor = "let ball of line.balls" 
+                                    class="result-ball"
+                                    [ngClass] = '{match: ball.hit, special: ball.special}'
+                                  >{{ball.number}}</span>
+                                </div>
+                              </td>
+                              <td data-heading="Matches">
+                                <span *ngIf="line.numbers_match">{{line.numbers_match}}</span>
+                                <span *ngIf="!line.numbers_match">--</span>
+                              </td>
+                              <td [attr.data-heading]="detailsData?.draw.special_name">
+                                <span *ngIf="line.specials_match">{{line.specials_match}}</span>
+                                <span *ngIf="!line.specials_match">--</span>
+                              </td>
+                              <td data-heading="Win">
+                                <span *ngIf="line.prize">{{line.prize | number: '1.2-2'}} {{detailsData?.draw.currency}}</span>
+                                <span *ngIf="!line.prize">--</span>
+                              </td>
+                            </tr>
+                            
+                          </tbody>
+                        </table>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section" *ngIf="withdrawFormActive">
+              <div class="text-right mb-3"><a (click)="hidewithdrawForm()" class="action-link"><fa name="chevron-left"></fa>Go back to my balance</a></div>
+              <div class="row pr-md-1 pl-md-1 withdrawal-cards">
+                <div class="col-md">
+                  <div class="card-bg position-relative may-load" [class.is-loading] = "authService.requestingCurrentSessionData">
+                    <span *ngIf="authService.requestingCurrentSessionData" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                    <div *ngIf="!authService.requestingCurrentSessionData">
+                      <div class="title font-weight-bold">Withdrawal</div>
+                      <div class="text-center withdraw-details">
+                        <div class="label">Available balance</div>
+                        <div class="amount">{{authService.user?.balance | number : "1.0-2"}} GBP</div> 
+                      </div>
+                      <span *ngIf="isRequestingWithdraw" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                      <form #f = "ngForm">
+                        <div class="successful-update-msg" *ngIf="showUpdateSuccessfullMsg">Your request has been sent.</div>
+                        <div class="form-row form-row-errors errors-group" *ngIf="withdrawErrors.length">
+                          <ul class="m-0">
+                              <li *ngFor="let error of withdrawErrors error-text">{{error}}</li>
+                          </ul>
+                        </div>
+                        <fieldset [disabled]="isRequestingWithdraw">
+                          <div><label for="w-amount">Amount to withdraw</label></div>
+                          <div class="w-amount-wrap">
+                            <input type="text" [(ngModel)]="amountToWithdraw" id="w-amount" name="w-amount" #wamount="ngModel" required pattern="[-+]?[0-9]*\.?[0-9]+" [disabled] = "authService.requestingCurrentSessionData">
+                            <span class="amount-currency">GBP</span>
+                            <!-- <span class="amount-currency">{{currencyService.getSelectedCurrency()}}</span> -->
+                            <div class="cannot-withdraw-msg mt-0" *ngIf="!wamount.valid">This value is not valid.</div>
+                          </div>
+                          <div>
+                            <button class="btn btn-big-green w-100" (click)="withdraw()" [disabled] = "amountToWithdraw <= minimumWithdraw || !wamount.valid || authService.requestingCurrentSessionData">Withdraw</button>
+                            <span class="cannot-withdraw-msg" *ngIf="amountToWithdraw <= minimumWithdraw">Amount has to be above 3.00 GBP to initiate a withdrawal.</span>
+                          </div>
+                        </fieldset>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="card-bg mb-3">
+                    <div class="title font-weight-bold">Withdrawal fee</div>
+                    
+                    <div class="row justify-content-between description">
+                      <div class="col-auto">Amount above 3.00 GBP: </div>
+                      <div class="col-auto"><span class="no-fee">No fee</span></div>
+                    </div>
+                    
+                  </div>
+                  <div class="card-bg mb-3">
+                    <div class="title font-weight-bold">Your transfer</div>
+                    <div class="description">The transfer will be to the same card you used for your subscription.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>

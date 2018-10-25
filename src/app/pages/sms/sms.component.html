@@ -1,0 +1,54 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+        <div class="container text-white"></div>
+    </div>
+</div>
+
+<div class="sms">
+    <div class="content-wrap container mt-3 mb-4">
+        <div class="row">
+            <div class="col-md-6 mb-12 removeform">
+                <h1>Remove me from receiving SMS Notifications</h1>
+
+                <div class="successful-update-msg" *ngIf="formSubmitted">
+                    You won't receive an SMS anymore.<br /> Thank you for being with Wshful.
+                </div>
+
+                <div class="form-field" *ngIf="!formSubmitted">
+                    <div class="errors-group" *ngIf="submitErrors.length > 0">
+                        <div *ngFor="let error of submitErrors">
+                            <div>{{error}}</div>
+                        </div>
+                    </div>
+                    <div class="hedar-text">
+                        <span>Country Code and Phone Number</span>
+                    </div>
+                    <div class="col-md-offset-1 col-md-10 input-field" [formGroup]="phone_form">
+                        <input type="tel" class="phone-prefix" placeholder="+XX" title="Country code" formControlName="phone_prefix">
+                        <input type="tel" class="phone-number" placeholder="Phone number" title="Phone number" formControlName="phone_number">
+                    </div>
+                    <div class="button-field text-center">
+                        <button type="submit" class="btn" (click)="unsubscribe()" [disabled]="isLoading">Remove me from receiving SMS</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-12 subscribeform">
+                <h1>Don’t Miss Out – Complete your Wshful subscription</h1>
+                <div class="subscription-field">
+                    <ul>
+                        <li>Just £4 per week for 20 lottery lines,</li>
+                        <li>Play huge EuroMillions and Mega Millions Jackpots,</li>
+                        <li>Better chances to win in a syndicate - 1 in 3 jackpots won by syndicates.</li>
+                    </ul>
+                </div>
+                <div class="button-field text-center">
+                    <button type="submit" class="btn" (click)="subscribe()">Subscribe Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-wrap">
+        <app-footer></app-footer>
+    </div>
+</div>

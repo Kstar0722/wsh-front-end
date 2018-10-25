@@ -1,0 +1,84 @@
+.sms {
+  .successful-update-msg {
+    font-size: 20px;
+    padding: 20px 8px;
+    color: black;
+    border: 1px solid #5dd500;
+    border-left: 0;
+    border-right: 0;
+    background: #f2fff0;
+    text-align: center;
+    font-weight: 400;
+  }
+  .content-wrap {
+    padding-bottom: 100px;
+    h1 {
+      font-weight: 400;
+      font-size: 30px;
+    }
+    .removeform {
+      .form-field {
+        .hedar-text {
+          text-align: center;
+          span {
+            padding-bottom: 15px;
+            font-size: 16px;
+          }
+          padding-bottom: 15px;
+        }
+        .input-field {
+          margin-left: auto;
+          margin-right: auto;
+          input {
+            line-height: 1.3em;
+            border-radius: 7px;
+            background-color: #ffffff;
+            height: 40px;
+            padding: 0 15px;
+            border: 2px solid #a4a4a4;
+            font-weight: 400;
+            font-size: 16px;
+            &.phone-prefix {
+              width: 29%;
+              margin-right: 2%;
+            }
+            &.phone-number {
+              width: 69%;
+            }
+          }
+        }
+        button.btn {
+          background: #b00e00;
+          font-size: 20px;
+          line-height: 1.2;
+          border-radius: 7px;
+          padding: 9px 15px;
+          margin-top: 24px;
+          outline: none;
+          &:hover {
+            background: #990e00;
+          }
+        }
+      }
+    }
+    .subscribeform {
+      .subscription-field {
+        line-height: 1.8em;
+        font-size: 16px;
+      }
+      .button-field {
+        button.btn {
+          background: #a6b001;
+          font-size: 28px;
+          line-height: 1.2;
+          border-radius: 7px;
+          padding: 11px 40px;
+          margin-top: 18px;
+          &:hover {
+            background: #909a01;
+          }
+        }
+      }
+    }
+  }
+}

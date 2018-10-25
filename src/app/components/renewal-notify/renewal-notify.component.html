@@ -1,0 +1,21 @@
+<div class="notify">
+  <div *ngIf="!renewal_flag" class="notify-text description-message">
+    <span>
+      Your subscription has expired, because we were not able to take payment from your current payment card.
+      We will make two further attempts to take a payment and restart your subscription.
+    </span>
+  </div>
+  <div *ngIf="renewal_flag" class="notify-text feedback-info">
+      <span>
+        Your subscription has been cancelled.<br>Thank you for being with us!
+      </span>
+  </div>
+  <div *ngIf="!renewal_flag" class="notify-button-group row">
+    <div class="col-md-5 mb-12 group-btn">
+      <button (click)="changeCard()" [disabled]="is_loading">CHANGE CARD</button>
+    </div>
+    <div class="col-md-5 offset-md-1 mb-12 group-btn">
+        <button (click)="cancelAutoRenewal()" [disabled]="is_loading">CANCEL RENEWALS</button>
+    </div>
+  </div>
+</div>

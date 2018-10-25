@@ -1,0 +1,17 @@
+
+<div class="position-relative">
+  <span *ngIf="jackpotsServiceRef.jackpotsSumNormalized.isLoading" class="icon-loader text-white"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+  <div class="may-load" [ngClass]="{'is-loading': jackpotsServiceRef.jackpotsSumNormalized.isLoading}">
+  
+    <div class="amount">
+      <sup class="currency" [innerHTML] = "jackpotsServiceRef.jackpotsSumNormalized.currencySymbol"></sup>
+      <span class="value">
+        <span ><img *ngFor="let digit of jackpotsServiceRef.jackpotsSumNormalized.sumFormatedDigits" [class.dot]="digit == '.'" class="amount-digit" src="/assets/images/bulb-digits/{{digit}}.png" alt=""></span>
+      </span>
+    </div>
+    <div class="multiplier">{{jackpotsServiceRef.jackpotsSumNormalized.sumFormated.unit}}</div>
+  </div>
+  <div class="info text-uppercase">
+    <div class="label">Total Jackpots</div>
+  </div>
+</div>

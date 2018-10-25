@@ -1,0 +1,61 @@
+<div class="header-wrap">
+  <!-- <app-header textAbovePageTitle = "One of these syndicates will win the $100,000,000 jackpot. Will it be yours?"></app-header> -->
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container">
+      <div class="choose-plan-title pt-xl-5 pb-xl-5 pt-5 pb-2">
+        <img src="/assets/images/choose-plan-and-play.png" alt=""> 
+      </div>
+    </div>
+    <div class="mt-xl-3 mb-xl-3 mt-2 mb-2 pt-xl-3 pb-xl-3 pt-2 pb-2 plan-reduction-banner trial-info-banner" *ngIf="plansServiceRef.isTrial()">
+      <div class="container text-center">
+        <div class="normal text-uppercase">Trial offer - limited time!</div>
+        <div class="big text-uppercase">From <span [innerHTML]="plansServiceRef.plans['bronze']?.planVars.currencySymbol"></span>{{plansServiceRef.plans.bronze.planVars.price}}</div>
+        <div class="big text-uppercase">For {{plansServiceRef.plans.bronze.planVars.weeks}} weeks</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="pt-xl-5 pb-xl-5 pt-2 pb-2">
+        <app-pricing-plans></app-pricing-plans>
+      </div>
+      <!-- <div class="plans-prop-boxes text-center pb-2">
+        <div class="row">
+          <div class="col-4 mb-3">
+            <div class="plans-prop-box">
+              <div class="plans-prop-box-title">withdraw winnings <br>instantly</div>
+              <div><img src="/assets/images/piggy.png" alt=""></div>
+            </div>
+          </div>
+
+          <div class="col-4 mb-3">
+            <div class="plans-prop-box">
+              <div class="plans-prop-box-title">spam <br>free</div>
+              <div><img src="/assets/images/nospam.png" alt=""></div>
+            </div>
+          </div>
+        
+          <div class="col-4 mb-3">
+            <div class="plans-prop-box">
+              <div class="plans-prop-box-title">cancel <br>anytime</div>
+              <div><img src="/assets/images/forbidden.png" alt=""></div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- <div class="container">
+    <div class="section-content">
+    </div>
+  </div> -->
+  
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>
+  

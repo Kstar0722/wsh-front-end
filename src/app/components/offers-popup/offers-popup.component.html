@@ -1,0 +1,69 @@
+
+<div *ngIf="showOffers()">
+  <div [appPopUp]='{openSelfAutomatically: true}' *ngIf="selectedOffer == 'promotion-trial' && !authService.isSubscribed() && !authService.requestingCurrentSessionData">
+    <div class="app-pop-up">
+      <div class="popup-wrap">
+        <div class="overflow">
+    
+          <div class="offer-popup offer-popup-trial">
+            <div class="primary row no-gutters align-items-center justify-content-center">
+              <span class="amount-lines col-auto">80</span>
+              <span class="description col-auto">Lottery <br>lines for</span>
+              <span class="price col-auto">£1</span>
+            </div>
+            <div class="secondary">
+              <div class="description">Claim £1 Trial Now</div>
+            </div>
+            <div>
+              <a routerLink = "/pricing" [queryParams]="{selected_offer: 'promotion-trial'}" class="btn btn-big-green close-box">Claim now</a>
+            </div>
+          </div>
+    
+        </div>
+        <span class="close close-box">&times;</span>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div [appPopUp]='{openSelfAutomatically: true}' *ngIf="selectedOffer == 'reduction-75p' && !authService.isSubscribed() && !authService.requestingCurrentSessionData">
+    <div class="app-pop-up">
+      <div class="popup-wrap">
+        <div class="overflow">
+    
+          <div class="offer-popup offer-popup-75p">
+            <div class="primary row align-items-center justify-content-center">
+              <div class="col-auto amount-off">75%</div>
+              <div class="col-auto discount-text"><span>discount</span></div>
+            </div>
+            <div class="secondary">
+              <div class="description"><span class="price">pay £3</span> for subscription</div>
+              <div class="normal-price">(Normal Price £12)</div>
+            </div>
+            <div>
+              <a routerLink = "/pricing" [queryParams]="{selected_offer: 'reduction-75p'}" class="btn btn-big-green close-box">Claim now</a>
+            </div>
+          </div>
+    
+        </div>
+        <span class="close close-box">&times;</span>
+      </div>
+    </div>
+  </div>
+  
+  <div [appPopUp]='{openSelfAutomatically: true}' *ngIf="selectedOffer == 'promotion-silver' && !authService.isSubscribed() && !authService.requestingCurrentSessionData">
+    <div class="app-pop-up">
+      <div class="popup-wrap">
+        <div class="overflow">
+    
+          <div class="offer-popup offer-popup-75p">
+            promotion silver test
+          </div>
+    
+        </div>
+        <span class="close close-box">&times;</span>
+      </div>
+    </div>
+  </div>
+
+</div>

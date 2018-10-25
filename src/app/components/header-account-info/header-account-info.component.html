@@ -1,0 +1,79 @@
+<div class="header-account not-logged-in row justify-content-end" *ngIf="!authServiceRef.isLoggedIn()">
+    <div class="col-auto">
+        <a routerLink="/login" class="btn btn-header btn-header-transparent">Login</a>
+    </div>
+    <div class="col-auto">
+        <a routerLink="/pricing" class="btn btn-header">Signup</a>
+    </div>
+</div>
+<div class="header-account logged-in row no-gutters justify-content-end" [class.expanded]="expanded" *ngIf="authServiceRef.isLoggedIn()">
+    <div class="col-auto">
+        <div class="position-relative">
+            <span *ngIf="!authServiceRef.user" class="icon-loader text-white">
+                <fa name="circle-o-notch" size="1x" animation="spin"></fa>
+            </span>
+            
+            <div class="may-load" [class.is-loading]="!authServiceRef.user">
+                <div class="text-right">
+                    <a routerLink="/dashboard" class="btn btn-header d-none d-sm-inline">Dashboard</a>
+                    <a class="header-account-trigger" (click)="toggle()">
+                        <span class="text mr-1">Hello<span *ngIf="authServiceRef.user?.first_name != null">, {{authServiceRef.user?.first_name}}</span>!</span>
+                        <fa *ngIf="!expanded" name="chevron-down"></fa>
+                        <fa *ngIf="expanded" name="chevron-up"></fa>
+                    </a>
+                </div>
+
+                <div class="position-relative">
+                    <div class="details">
+
+                        <div class="text-center">
+                            <div class="ballance-title">Winnings Balance</div>
+                            <div class="ballance-value">{{authServiceRef.user?.balance | number: "1.2-2"}} GBP</div>
+                            <div class="ballance-link">
+                                <a class="btn btn-wire-1" routerLink="/my-balance">Your balance</a>
+                            </div>
+                        </div>
+
+                        <ul class="quick-links list-reset">
+                            <li>
+                                <a routerLink="/dashboard">
+                                    <fa name="home"></fa>&nbsp;<span>My dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/my-results">
+                                    <fa name="ticket"></fa>&nbsp;<span>My Lottery results</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/account">
+                                    <fa name="user"></fa>&nbsp;<span>Account</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <a class="btn btn-alt w-100 text-center" (click)="logout()">Log out</a>
+
+                        <a 
+                            class="btn btn-offer text-center d-none d-lg-inline-block w-100" 
+                            *ngIf="!authServiceRef.isSubscribed() && !authServiceRef.requestingCurrentSessionData && selectedOffer == 'promotion-trial'"
+                            routerLink = "/pricing" 
+                            [queryParams]="{selected_offer: 'promotion-trial'}">
+                                <fa name="info-circle" class="mr-1"></fa>
+                                Your £1 Trial is ready.
+                        </a>
+
+                    </div>
+                </div>
+
+                <a 
+                    class="btn btn-offer btn-offer-rounded text-center d-none d-lg-inline-block" 
+                    *ngIf="!authServiceRef.isSubscribed() && !authServiceRef.requestingCurrentSessionData && selectedOffer == 'promotion-trial'"
+                    routerLink = "/pricing" 
+                    [queryParams]="{selected_offer: 'promotion-trial'}">
+                        <fa name="info-circle" class="mr-1"></fa>
+                        Your £1 Trial is ready.
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

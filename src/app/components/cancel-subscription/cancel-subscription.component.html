@@ -1,0 +1,29 @@
+<div *ngIf="!!authService.user?.packages?.length" class="position-relative may-load subscription-cancelation mt-5" [ngClass]="{'is-loading': isLoading}">
+    <span *ngIf="isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+  <div class="form-row form-row-errors errors-group" *ngIf="errors.length">
+    <ul class="m-0">
+        <li *ngFor="let error of errors error-text">{{error}}</li>
+    </ul>
+  </div>
+  <div class="title">Cancel Subscription</div>
+  <div class="description-1">
+    <p>You are currently subscribed to <strong class="text-uppercase">{{ plansService.getNameOfPackageId(authService.user?.packages[0].package.id)}}</strong>.</p>
+    <p *ngIf="authService.user?.packages[0].auto_renewal">Next payment on {{authService.user?.packages[0].end_datetime | unifyDate | date: 'MMM d, y'}}</p>
+    <p *ngIf="!authService.user?.packages[0].auto_renewal">Payment will not recur after your subscription have ended.</p>
+  </div>
+  <div class="description-2">
+      <p *ngIf="authService.user?.packages[0].auto_renewal">You may cancel your subscription at any time.</p>
+    <p>You will remain in your syndicates until the duration you are paid upto and your bonuses have ended.</p>
+  </div>
+  
+  <div class="cancel-btn-wrap">
+
+    <button class="btn btn-wire-small btn-cancel" (click)="cancelSubscription()" *ngIf="authService.user?.packages[0].auto_renewal">Cancel Subscription</button>
+    <button class="btn btn-wire-small btn-renewal" (click)="activateAutoRenewal()" *ngIf="!authService.user?.packages[0].auto_renewal">Activate Recurrence</button>
+  </div>
+</div>
+<div *ngIf="authService.user != null && !authService.user?.packages?.length">
+    <div class="description-1">
+      <p>You are not a subscriber.</p>
+    </div>
+</div>

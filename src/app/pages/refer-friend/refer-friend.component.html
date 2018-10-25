@@ -1,0 +1,233 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="container section-content private-pages-sides-wrap">
+      <div class="row no-gutters">
+        <div class="col-12 col-xl-3">
+          <app-user-menu></app-user-menu>
+        </div>
+        <div class="col-12 col-xl-9">
+          <div class="private-pages-right-side-wrap">
+            <div class="section section-how-referrals-work">
+              <div class="">
+                <div class="position-relative" *ngIf = "authServiceRef?.isLoggedIn()">
+                  <span *ngIf="!authServiceRef?.user" class="icon-loader"><fa name="circle-o-notch" size="3x" animation="spin"></fa></span>
+                  <div class="copy-referral-link-outer">
+                    <div class="copy-referral-link may-load" [class.is-loading]="!authServiceRef?.user">
+                      <div class="title">this is your personal referral link</div>
+                      <div class="row no-gutters">
+                        <div class="col"><input #referralLinkInput [value]="origin + '/invite/' + authServiceRef?.user?.refer_url_id" type="text" readonly class="w-100"></div>
+                        <div class=""><button class="col-auto btn w-100" (click)="copyLinkToClipboard(referralLinkInput)">Copy link</button></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-5">
+                    <img  class="get-free-image" src="/assets/images/woman-with-tickets.jpg" alt="">
+                    <div class="get-free">
+                      <div><strong>get 50 free</strong></div>
+                      <div>powerball lines</div>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="text-white text-center steps-to-success hrw">
+                      <div class="section-content pb-2 pb-md-4 pt-md-4 pt-0">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                              <div class="icon-wrap row align-items-center">
+                                <div class="col">
+                                  <img src="/assets/svg/sss-send.svg" alt="" class="icon">
+                                </div>
+                              </div>
+                              <h3>referral link</h3>
+                              <p>send your <strong>personal referral link</strong> to a friend</p>
+                            </div>
+                            <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                              <div class="icon-wrap row align-items-center">
+                                <div class="col">
+                                  <img src="/assets/svg/sss-receive.svg" alt="" class="icon">
+                                </div>
+                              </div>
+                              <h3>subscription</h3>
+                              <p>your friend subscribes</p>
+                            </div>
+                            <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                              <div class="icon-wrap row align-items-center">
+                                <div class="col">
+                                  <img src="/assets/svg/sss-play.svg" alt="" class="icon">
+                                </div>
+                              </div>
+                              <h3>bonus</h3>
+                              <p>you both receive <br><strong>50 FREE Powerbal Lines!</strong></p>
+                            </div>
+                            
+                          </div>
+
+                      </div>
+                      
+        
+                    </div>
+                  </div>
+                </div>
+                
+                
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>
+
+
+
+<!-- old design -->
+
+<!-- <div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="section secondary-nav">
+      <div class="container">
+          <div class="section-content list-reset">
+              <ul class="row justify-content-end no-gutters level-1">
+                  <li class="col-12 col-lg-auto active-link-group">
+  
+                      <ul class="level-2">
+                          
+                          <li class="active-link-group" style="max-width: 33.3333%;">
+  
+                              <a class="active-link" routerLink="/refer-a-friend">
+                                  Refer a Friend
+                              </a>
+  
+                          </li>
+                          <li style="max-width: 33.3333%;">
+  
+                              <a class="" routerLink="/my-referrals">
+                                  My Referrals
+                              </a>
+  
+                          </li>
+                          <li style="max-width: 33.3333%;">
+  
+                              <a class="" routerLink="/banners">
+                                  Banners
+                              </a>
+  
+                          </li>
+                      </ul>
+                  </li>
+                  
+              </ul>
+          </div>
+      </div>
+  </div>
+  
+  <div class="section section-how-referrals-work">
+    <div class="container">
+      <div class="section-content pt-0">
+        <div class="row">
+          <div class="col-12 col-lg-5 d-flex">
+            <div class="spacer"></div>
+            <div class="get-free">
+              <div><strong>get 50 free</strong></div>
+              <div>powerball lines</div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-7 d-flex mt-5 mt-lg-0">
+            <div class="text-white text-center steps-to-success hrw">
+              <h2 class="section-title text-glued-b">how do referrals work</h2>
+              <div class="section-content">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                      <div class="icon-wrap row align-items-center">
+                        <div class="col">
+                          <img src="/assets/svg/sss-send.svg" alt="" class="icon">
+                        </div>
+                      </div>
+                      <h3>referral link</h3>
+                      <p>send your <strong>personal referral link</strong> to a friend</p>
+                    </div>
+                    <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                      <div class="icon-wrap row align-items-center">
+                        <div class="col">
+                          <img src="/assets/svg/sss-receive.svg" alt="" class="icon">
+                        </div>
+                      </div>
+                      <h3>subscription</h3>
+                      <p>your friend subscribes</p>
+                    </div>
+                    <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                      <div class="icon-wrap row align-items-center">
+                        <div class="col">
+                          <img src="/assets/svg/sss-play.svg" alt="" class="icon">
+                        </div>
+                      </div>
+                      <h3>bonus</h3>
+                      <p>you both receive <br><strong>50 FREE Powerbal Lines!</strong></p>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              
+
+            </div>
+            <div class="position-relative" *ngIf = "authServiceRef.isLoggedIn()">
+              <span *ngIf="!authServiceRef.user" class="icon-loader"><fa name="circle-o-notch" size="3x" animation="spin"></fa></span>
+              <div class="copy-referral-link may-load" [class.is-loading]="!authServiceRef.user">
+                <div class="title">this is your personal referral link</div>
+                <div class="row no-gutters">
+                  <div class="col"><input #referralLinkInput [value]="origin + '/invite/' + authServiceRef.user?.refer_url_id" type="text" readonly class="w-100"></div>
+                  <div class=""><button class="col-auto btn w-100" (click)="copyLinkToClipboard(referralLinkInput)">Copy link</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section section-affiliate-terms">
+    <div class="container">
+      <div class="section-content">
+        <h2 class="section-title">Affiliate terms & conditions</h2>
+        <div class="last-updated"><p>These Affiliate Terms & Conditions were last updated on January 18, 2018.</p></div>
+        <p><span class="uppercase">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie tempus magna, sit amet egestas est cursus in. In vehicula, mi a dictum viverra, elit elit dapibus magna, quis euismod tortor massa non magna. Curabitur hendrerit auctor accumsan. Nulla dictum, libero quis eleifend maximus, eros sem dapibus mauris, quis pharetra </span></p>
+        <h3>1. Overview</h3>
+        <p>Donec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaculis est, vel pharetr</p>
+        <h3>2. Legal</h3>
+        <p>Donec tempus scelerisque mi ut ultrices. Sed in ligula vulputate,onec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iacnvallis dui. Aenean nec iaculis est, vel pharetr</p>
+        <h3>3. Conditions</h3>
+        <p>Donec tempus scelerisque mi ut ultricesonec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaconec tempus scelerisque mi ut ultrices. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iac. Sed in ligula vulputate, rutrum magna vel, convallis dui. Aenean nec iaculis est, vel pharetr</p>
+        <div class="mt-5">
+          <p><strong class="mr-1">&gt;</strong>Find out more on our <a routerLink="/support"><strong>Support</strong></a> page.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div> -->
+  

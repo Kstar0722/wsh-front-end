@@ -1,0 +1,35 @@
+
+
+  <div class="estimated-jackpots-height">
+
+    <div 
+      *ngFor = "let lottery of Object.keys(jackpotsServiceRef.jackpotsNormalized.lotteries)" 
+      class="jackpot-ball ball-{{lottery}} order-{{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].order}}"
+      [class.jackpot-ball-small]="jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].order != 1"
+    >
+      <div class="position-relative">
+        <span *ngIf="jackpotsServiceRef.jackpotsNormalized.isLoading" class="icon-loader text-white"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+        <div class="ball-height may-load" [ngClass]="{'is-loading': jackpotsServiceRef.jackpotsNormalized.isLoading}">
+          <div class="estimated-jackpot-title">
+            <div>
+              <span class="estimated-jackpot-currency" [innerHTML]="jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].currencySymbol"></span><span class="estimated-jackpot-amount">{{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].amount_formated.value | number : '1.0-0'}}<span class="estimated-jackpot-multiplier">{{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].amount_formated.unit}}</span></span>
+              
+            </div>
+            <div class="estimated-jackpot-description">
+              Estimated Jackpot
+            </div>
+          </div>
+          <div class="timer">
+            <app-flipclock [count]="jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].draw_timestamp"></app-flipclock>
+          </div>
+          <div class="close-date">{{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].draw_datetime_expanded.weekday}} {{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].draw_datetime_expanded.day}} {{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].draw_datetime_expanded.month}}, {{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].draw_datetime_expanded.hour}}:{{jackpotsServiceRef.jackpotsNormalized.lotteries[lottery].draw_datetime_expanded.minute}} BST</div>
+          <div class="estimated-jackpot-logo">
+            <img src="/assets/images/logo-{{lottery | lowercase}}-color.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+

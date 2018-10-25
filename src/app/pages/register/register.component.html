@@ -1,0 +1,246 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="section section-register">
+      <div class="container">
+        <div class="section-content">
+          <div class="position-relative forms-wrapper">
+
+            <span *ngIf="(plansServiceRef.plansLoading && !!selectedPlanName) || formWaitingForResponse" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+            <div class="row justify-content-center">
+              <div class="col-12 col-lg-8 position-static personal-info-form">
+
+                <div
+                        *ngIf="dedicatedPackageRegistration && !!selectedPlanName && plansServiceRef.isValidPlanName(selectedPlanName)"
+                        class="top-brief-reg-package"
+                >
+                  <div class="top-reg-header">{{selectedPlanName | uppercase}} MEMBERSHIP</div>
+                  <div class="top-reg-body">
+                    <div class="top-reg-body-left">
+                      Your subscription includes:
+                      <div class="top-reg-padded-left">
+                        <div>
+                          <b>{{plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.euromillions * plansServiceRef.plans[selectedPlanName]?.planVars.weeks * plansServiceRef.plans[selectedPlanName]?.planVars.weeklyDraws}} lottery lines</b> EuroMillions
+                        </div>
+                        <div>
+                          <b>{{plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.megamillions * plansServiceRef.plans[selectedPlanName]?.planVars.weeks * plansServiceRef.plans[selectedPlanName]?.planVars.weeklyDraws}} lottery lines</b> MegaMillions
+                        </div>
+                      </div>
+                      <div *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.powerball > 0">
+                        Special bonus:<br />
+                        <div class="top-reg-padded-left">
+                          <b>{{plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.powerball}} lottery lines</b> PowerBall
+                        </div>
+                      </div>
+                    </div>
+                    <div class="top-reg-spacer"></div>
+                    <div class="top-reg-body-right">
+                      <div class="top-reg-regular-price" *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.reduction > 0">
+                        Regular price: <span class="price-amount">&pound;<span class="price-number">{{plansServiceRef.plans[selectedPlanName]?.planVars.originalPrice}}</span></span>
+                      </div>
+                      <div class="top-reg-discount-value" *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.reduction > 0">
+                        Discount: <span class="price-amount">&pound;<span class="price-number">{{plansServiceRef.plans[selectedPlanName]?.planVars.reduction}}</span></span>
+                        <span class="price-reduction-info">&nbsp;({{(1-(plansServiceRef.plans[selectedPlanName]?.planVars.price / plansServiceRef.plans[selectedPlanName]?.planVars.originalPrice))*100 | number : '1.0-0'}}% off your first 4 weeks)</span>
+                      </div>
+                      <div class="top-reg-real-price">
+                        Price you pay: <span class="price-amount">&pound;<span class="price-number">{{plansServiceRef.plans[selectedPlanName]?.planVars.price}}</span></span>
+                        <div class="top-reg-vat-included-info">Price includes VAT</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <form #f="ngForm" class="may-load" (ngSubmit)="onSubmit(f)" [class.tried-submit]="triedSubmit">
+                    
+                  <fieldset [disabled]="(plansServiceRef.plansLoading && selectedPlanName) || formWaitingForResponse">
+                    <div class="justify-content-center">
+                      <div class="form-wrap-inner w-100">
+                        <h2>Register with email</h2>
+                        <div class="form-row form-row-errors errors-group" *ngIf="formErrors.length">
+                          <ul class="m-0">
+                              <li *ngFor="let error of formErrors error-text">{{error}}</li>
+                          </ul>
+                          
+                        </div>
+                        <div class="form-row form-row-firstname">
+                          <label for="firstname">First Name</label>
+                          <span class="d-inline-block form-row-of-inputs">
+                            <div class="row">
+                              <div class="col col-salutation">
+                                <select class="" name="salutation" id="salutation" [(ngModel)]="formFields.salutation" #salutation = "ngModel" required>
+                                  <option value="Mr">Mr</option>
+                                  <option value="Mrs">Mrs</option>
+                                  <option value="Miss">Miss</option>
+                                  <option value="Ms">Ms</option>
+                                  <option value="Dr">Dr</option>
+                                </select>
+                                <span *ngIf="triedSubmit && !!salutation.errors?.required" class="field-error">Select salutation.</span>
+                              </div>
+                              <div class="col col-firstname">
+                                <input type="text" name="firstname" id="firstname" [(ngModel)]="formFields.firstName" #firstName="ngModel" required>
+                                <span *ngIf="triedSubmit && !!firstName.errors?.required" class="field-error">Provide first name.</span>
+                              </div>
+                            </div>
+                          </span>
+                        </div>
+            
+                        <div class="form-row form-row-lastname">
+                          <label for="lastname">Last Name</label>
+                          <span class="d-inline-block form-row-of-inputs">
+                            <input type="text" name="lastname" id="lastname"  [(ngModel)]="formFields.lastName" #lastName = "ngModel" required>
+                            <span *ngIf="triedSubmit && !!lastName.errors?.required" class="field-error">Provide last name.</span>
+                          </span>
+                        </div>
+            
+                        <div class="form-row form-row-email">
+                          <label for="email">Email Address</label>
+                          <span class="d-inline-block form-row-of-inputs">
+                            <input type="email" name="email" id="email"  [(ngModel)]="formFields.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" #email = "ngModel" required>
+                            <span *ngIf="triedSubmit && !!email.errors?.pattern" class="field-error">Please provide a valid email address.</span>
+                            <span *ngIf="triedSubmit && !!email.errors?.required" class="field-error">Please provide an email address.</span>
+                          </span>
+                        </div>
+            
+                        <div class="form-row form-row-password">
+                          <label for="password">Password</label>
+                          <span class="form-row-of-inputs d-inline-block">
+                            <span class="d-inline-block position-relative">
+                              <span (click)="_togglePwdType()" class="button-show-pwd" [class.active]="_showPwd"><fa name="eye"></fa></span>
+                              <input type="{{_pwdType}}" name="password" id="password" [(ngModel)]="formFields.password" #password="ngModel" required minlength="5" placeholder="min. 5 characters"><br>
+                            </span>
+                            <span *ngIf="triedSubmit && !!password.errors?.minlength" class="field-error">Password must have at least 4 characters.</span>
+                            <span *ngIf="triedSubmit && !!password.errors?.required" class="field-error">Please provide a password.</span>
+                            
+                            <ng2-password-strength-bar 
+                              [passwordToCheck]="formFields.password" 
+                              [barLabel]="'Password strength'" 
+                              [barColors]="['#DD2C00', '#FF6D00', '#FFD600', '#AEEA00', '#00C853']"
+                            > </ng2-password-strength-bar>
+                          </span>
+                        </div>
+                        <div class="form-row form-row-birthdate">
+                          <label>Birth date</label>
+                          <span class="d-inline-block form-row-of-inputs">
+                            <div class="row">
+                              <span class="col col-day">
+                                <label for="birthDay">Day</label><br>
+                                <select name="birthDay" id="birthDay" [(ngModel)]="formFields.birthDay" #birthDay = "ngModel" required>
+                                  <option *ngFor= "let i of birthDateSelectors.days" [value]="i">{{i}}</option>
+                                </select>
+                                <span *ngIf="triedSubmit && !!birthDay.errors?.required" class="field-error">Select birth day.</span>
+                              </span>
+                              <span class="col col-month">
+                                  <label for="birthMonth">Month</label><br>
+                                <select name="birthMonth" id="birthMonth" (change)="onYearMonthChange(formFields.birthYear, formFields.birthMonth)" [(ngModel)]="formFields.birthMonth" #birthMonth="ngModel" required>
+                                  <option *ngFor= "let m of birthDateSelectors.months" [value]="m.value">{{m.label}}</option>
+                                </select>
+                                <span *ngIf="triedSubmit && !!birthMonth.errors?.required" class="field-error">Select birth month.</span>
+                              </span>
+                              <span class="col col-year">
+                                <label for="birthYear">Year</label><br>
+                                <select name="birthYear" id="birthYear" (change)="onYearMonthChange(formFields.birthYear, formFields.birthMonth)" [(ngModel)]="formFields.birthYear" #birthYear = "ngModel" required>
+                                  <option *ngFor= "let i of birthDateSelectors.years" [value]="i">{{i}}</option>
+                                </select>
+                                <span *ngIf="triedSubmit && !!birthYear.errors?.required" class="field-error">Select birth year.</span>
+                              </span>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="form-row form-row-phone">
+                          <label for="phone">Phone Number</label>
+                          <span class="d-inline-block form-row-of-inputs">
+                            <div class="row">
+                              <div class="col col-phone-prefix"><input type="text" name="phonePrefix" id="phonePrefix" [(ngModel)]="formFields.phonePrefix"></div>
+                              <div class="col col-phone"><input type="text" name="phone" id="phone" [(ngModel)]="formFields.phone" placeholder="e.g. 7123123123"></div>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="form-row form-row-address">
+                          <label for="address" class="address-label hide-on-mobile">Address</label>
+                          <span class="form-row-of-inputs d-inline-block">
+                            <div class="form-row-of-inputs-inner">
+                              <label for="address" class="address-label show-on-mobile">Address</label>
+                              <input type="text" name="address" id="address" [(ngModel)]="formFields.address" required #address="ngModel">
+                              <span *ngIf="triedSubmit && !!address.errors?.required" class="field-error">Provide address.</span>
+                            </div>
+                            <span class="row form-row-of-inputs-inner">
+                              <span class="col-12 col-sm mb-3 mb-sm-0 col-town">
+                                <label for="town">Town/City</label><br>
+                                <input type="text" name="town" id="town" required [(ngModel)]="formFields.town" #town = "ngModel">
+                                <span *ngIf="triedSubmit && !!town.errors?.required" class="field-error">Provide town/city.</span>
+                              </span>
+                              <span class="col-12 col-sm col-postcode">
+                                <label for="postcode">Postcode</label><br>
+                                <input type="text" name="postcode" id="postcode"  [(ngModel)]="formFields.postcode" #postcode = "ngModel" required>
+                                <span *ngIf="triedSubmit && !!postcode.errors?.required" class="field-error">Provide postcode.</span>
+                              </span>
+                            </span>
+                            <span class="d-block form-row-of-inputs-inner">
+            
+                              <label for="country">Country</label><br>
+                              <select name="countryId" id="countryId" [(ngModel)]="formFields.countryId" (change)="onCountryChange($event)" required #country = "ngModel">
+                                <option *ngFor="let country of countries | countriesSeparator" [value]="country.id" [disabled]="country.id == '-1'">{{country.name}}</option>
+                              </select>
+                              <span *ngIf="triedSubmit && !!country.errors?.required" class="field-error">Select country.</span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                      <!-- <div class="text-center mt-4 submit-button-wrap">
+                        <input *ngIf="selectedPlanName && plansServiceRef.isValidPlanName(selectedPlanName)" type="submit" value = "Proceed to payment" class="btn">
+                        <input *ngIf="!selectedPlanName || !plansServiceRef.isValidPlanName(selectedPlanName)" type="submit" value = "Register" class="btn">
+                      </div> -->
+                    </div>
+                    
+                  </fieldset>
+    
+                </form>
+              </div>
+              
+              <div class="col-12 col-lg-4 mt-3 mt-lg-0">
+                <div class="social-buttons login-social-box mb-2 text-center d-none d-lg-block">
+                  <img src="/assets/images/official-tickets-white-bg.png" alt="Official Tickets">
+                  &nbsp; &nbsp;
+                  <img src="/assets/images/online-top10.png" alt="Best Online Lottery - Top 10">
+                </div>
+                <!--
+                <div class="social-buttons login-social-box mb-4"> 
+                  <a (click)="registerWith('facebook')" class="btn btn-block btn-social btn-facebook mb-1">
+                      <fa name="facebook-f"></fa> Register with Facebook
+                  </a>
+                  <a (click)="registerWith('twitter')" class="btn btn-block btn-social btn-twitter">
+                      <fa name="twitter"></fa> Register with Twitter
+                  </a>
+                </div>
+                -->
+                <app-order-details 
+                  #od
+                  *ngIf="!!selectedPlanName && plansServiceRef.isValidPlanName(selectedPlanName)"
+                  [disabledIf]='plansServiceRef.plansLoading || formWaitingForResponse'
+                  [selectedPlanName]="selectedPlanName"
+                  (done) = "onSubmit(f)"
+                  (voucherValidation)="onVoucherValidation($event)"
+                  [showVoucherField]="showVoucherField"
+                  [showOptInEmailsField]="true"
+                ></app-order-details>
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>
+    
+  

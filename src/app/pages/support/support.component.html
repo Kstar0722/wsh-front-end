@@ -1,0 +1,187 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="container">
+    <div class="section section-support">
+      <div class="section-content">
+        <div *ngIf="!detailsData" [@fade]="animationShowMain ? 'in' : 'out'">
+
+          <!-- <div class="text-center">
+            <div class="box-sup">
+              <div class="col-auto mb-auto mt-auto">
+                <div class="title mb-3">Our Commitment</div>
+                <p>We will always try to help</p>
+                <p>We will always try to be clear with our terms and conditions</p>
+                <p>Always affordable</p>
+                <p>We will never spam you</p>
+                <p>We will listen to our customers</p>
+                <p>We are always looking to improve</p>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="row text-center">
+  
+            <div class="col-md-6 col-lg-4 mb-3">
+              <a class="box-sup-a" (click)="showDetailsFor(faqData.paymentIssues)">
+                <div class="box-sup box-sup-color row flex-column no-gutters align-items-center">
+                  <div class="col-auto mb-3 mt-auto">
+                    <div class="title">{{faqData.paymentIssues.title}}</div>
+                  </div>
+                  <div class="col-auto mt-3 mb-auto">
+                    <img [src]="faqData.paymentIssues.icon" alt="">
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <a class="box-sup-a" (click)="showDetailsFor(faqData.collectWinings)">
+                <div class="box-sup box-sup-color row flex-column no-gutters align-items-center">
+                  <div class="col-auto mb-3 mt-auto">
+                    <div class="title">{{faqData.collectWinings.title}}</div>
+                  </div>
+                  <div class="col-auto mt-3 mb-auto">
+                      <img [src]="faqData.collectWinings.icon" alt="">
+                  </div>
+                </div>
+              </a>
+            </div>
+            
+            
+            <!-- <div class="col-md-6 col-lg-4 mb-3">
+              <div class="box-sup box-sup-color row flex-column no-gutters align-items-center">
+                <div class="col-auto mb-3 mt-auto">
+                  <div class="title"><small>Transparent guide to our</small> <br>terms & conditions</div>
+                </div>
+                <div class="col-auto mt-3 mb-auto">
+                  <img src="/assets/images/support/terms.png" alt="">
+                </div>
+              </div>
+            </div> -->
+            <div class="col-md-6 col-lg-4 mb-3 order-12 order-lg-0 col-bg-only">
+              <div class="box-sup row flex-column no-gutters align-items-center" style="background-image: url('/assets/images/support/contact-person.png')">
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-3">
+              <a class="box-sup-a" (click)="showDetailsFor(faqData.dataPrivacy)">
+                <div class="box-sup box-sup-color row flex-column no-gutters align-items-center">
+                  <div class="col-auto mb-3 mt-auto">
+                    <div class="title">{{faqData.dataPrivacy.title}}</div>
+                  </div>
+                  <div class="col-auto mt-3 mb-auto">
+                    <img [src]="faqData.dataPrivacy.icon" alt="">
+                  </div>
+                </div>
+              </a>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 mb-3">
+              <a class="box-sup-a" (click)="showDetailsFor(faqData.cancelInstantly)">
+                <div class="box-sup box-sup-color row flex-column no-gutters align-items-center">
+                  <div class="col-auto mb-3 mt-auto">
+                    <div class="title">{{faqData.cancelInstantly.title}}</div>
+                  </div>
+                  <div class="col-auto mt-3 mb-auto">
+                    <img [src]="faqData.cancelInstantly.icon" alt="">
+                  </div>
+                </div>
+              </a>
+            </div>
+            
+            <div class="col-12 col-lg-4 mb-3 order-12 order-lg-0">
+              <div class="pt-0 pb-0 box-sup box-contact-info row flex-column no-gutters align-items-center">
+                <h4 class="mt-0 text-left">Contact form</h4>
+                <div class="errors-group" *ngIf="formErrors.length">
+                  <ul class="m-0">
+                      <li *ngFor="let error of formErrors error-text">{{error}}</li>
+                  </ul>
+                </div>
+                <form #f = "ngForm" (submit)='sendMessage(f)' class="w-100">
+                  <div class="contact-form-row">
+                    <input type="text" name="name" id="name" [(ngModel)]="contactFormFields.name" #name = "ngModel" required placeholder="Name *">
+                    <span *ngIf="triedSubmit && !!name.errors?.required" class="field-error">Type your name.</span>
+                  </div>
+                  <div class="contact-form-row">
+                    <input type="email" name="email" id="email" [(ngModel)]="contactFormFields.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" #email = "ngModel" required placeholder="Email *">
+                    <span *ngIf="triedSubmit && !!email.errors?.pattern" class="field-error">Please type a valid email.</span>
+                    <span *ngIf="triedSubmit && !!email.errors?.required" class="field-error">Please type an email.</span>
+                  </div>
+                  <div class="contact-form-row">
+                    <input type="text" name="phone" id="phone" [(ngModel)]="contactFormFields.phone" #phone = "ngModel" placeholder="Phone">
+                    <span *ngIf="triedSubmit && !!phone.errors?.required" class="field-error">Type your phone number.</span>
+                  </div>
+                  <div class="contact-form-row">
+                    <textarea name="message" id="message" [(ngModel)]="contactFormFields.text" #message = "ngModel" required placeholder="Message *"></textarea>
+                    <span *ngIf="triedSubmit && !!message.errors?.required" class="field-error">Write a message.</span>
+                  </div>
+                  <div class="successful-update-msg successful-update-msg-contact" *ngIf="showUpdateSuccessfullMsg">Your message has been sent.</div>
+                  <div class="contact-form-row"><input type="submit" value="Send message" [disabled]="sendingMessage"></div>
+                  <p><small>* - required fields</small></p>
+                </form>
+              </div>
+            </div>
+            
+            <!-- <div class="col-md-6 col-lg-4 mb-3">
+              <div class="box-sup box-sup-color row flex-column no-gutters align-items-center">
+                <div class="col-auto mb-3 mt-auto">
+                  <div class="title">Contact Us</div>
+                </div>
+                <div class="col-auto mt-3 mb-auto">
+                  <img src="/assets/images/support/contact.png" alt="">
+                </div>
+              </div>
+            </div> -->
+            
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p><strong>Wshful.com</strong></p>
+              <p><strong>Email:</strong> support@wshful.com</p>
+              <p><strong>Phone:</strong> +44 (0) 207 1833109</p>
+              <p>We aim to respond to all enquiries the same day during business hours, but please allow up to 48 hours. Our business hours are as follows:</p>
+              <ul>
+                <li>Monday to Friday: 09:00 to 17:00 GMT</li>
+                <li>Saturday &amp; Sunday: CLOSED</li>
+                <li>Bank Holidays: CLOSED</li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <p>
+                <strong>Head Office</strong><br />
+                Cloud Canyon Ltd<br>
+                24 Holborn Viaduct,<br />
+                London,<br />
+                EC1A 2BN,<br />
+                United Kingdom.
+              </p>
+              <p>
+                <strong>Trading Address</strong><br />
+                55 Boileau road,<br>
+                London,<br />
+                W5 3aj,<br />
+                United Kingdom.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="details" *ngIf="!!detailsData" [@fade]="animationShowDetails ? 'in' : 'out'">
+          <a class="action-link" (click)="hideDetails()"><fa  name="chevron-left"><i></i></fa>Go back</a>
+          <h2>{{detailsData.title}}</h2>
+          <app-accordion-group [accordionItems]="detailsData.items" triggerKey="question"  bodyKey="answer" ></app-accordion-group>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>
+  

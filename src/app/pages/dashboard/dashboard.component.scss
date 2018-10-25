@@ -1,0 +1,352 @@
+#dashboard {
+  .main-white {
+    background: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    .membership-badge-box {
+      text-align: center;
+      padding: 20px 0;
+      .membership-badge {
+        position: relative;
+        display: inline-block;
+        padding: 4px;
+        text-transform: uppercase;
+        color: black;
+        font-weight: 600;
+        font-size: 24px;
+        text-align: center;
+        line-height: 1em;
+        border-radius: 7px;
+        background: black;
+        &.bronze {
+          color: #795322;
+          background: linear-gradient(99deg, #795322 0%, #c3986e 100%);
+        }
+        &.silver {
+          color: #909090;
+          background: linear-gradient(99deg, #909090 0%, #bdbdbd 100%);
+        }
+        &.gold {
+          color: #d49d05;
+          background: linear-gradient(99deg, #cc9600 0%, #e7bd1b 100%);
+        }
+        .membership-badge-inner {
+          background: white;
+          border-radius: 4px;
+          padding: 8px 13px;
+        }
+      }
+      .membership-badge-box-change-package {
+        a {
+          text-transform: uppercase;
+          font-size: 12px;
+          font-weight: 300;
+          color: #787879;
+          text-decoration: underline;
+          padding: 5px;
+          display: inline-block;
+          &:hover {
+            color: black;
+          }
+        }
+      }
+    }
+    .main-white-text {
+      padding: 0 10px;
+      .weekly-value-row {
+        display: flex;
+        padding: 8px 0;
+        width: 100%;
+        max-width: 292px;
+        font-size: 14px;
+        line-height: 24px;
+        font-weight: 400;
+        &.bottom-separation {
+          border-bottom: 1px solid #c3c3c3;
+        }
+        .weekly-value-title {
+          text-transform: uppercase;
+          width: 164px;
+          box-sizing: padding-box;
+          padding-left: 7px;
+          &.wider {
+            width: 230px;
+          }
+        }
+        .weekly-value {
+          font-size: 24px;
+          &.special {
+            color: #356295;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+    .syndicates-list-box {
+      .syndicates-header {
+        text-align: center;
+        text-transform: uppercase;
+        color: #356295;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 10px 0;
+      }
+      .syndicates-list {
+        text-align: center;
+        .syndicate-item {
+          position: relative;
+          margin: 0 7px;
+          margin-bottom: 7px;
+          cursor: pointer;
+          display: inline-block;
+          width: 75px;
+          border-radius: 10px;
+          background: #b1b1b1;
+          box-shadow: 0 0 10px #b1b1b1;
+          padding: 4px;
+          &:hover {
+            background: #66a886;
+            box-shadow: 0 0 10px #66a886;
+            .syndicate-item-lotteries {
+              img {
+                opacity: 1;
+              }
+            }
+          }
+          &.active {
+            background: #00a651;
+            box-shadow: 0 0 10px #00a651;
+            .syndicate-item-lotteries {
+              img {
+                opacity: 1;
+              }
+            }
+          }
+          .syndicate-item-lotteries {
+            padding: 4px 0;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            text-align: center;
+            background: #ffffff; /* Old browsers */
+            img {
+              opacity: 0.75;
+              padding: 0 3px;
+            }
+          }
+          .syndicate-item-name {
+            line-height: 29px;
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            font-weight: 700;
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .top-notification-welcome {
+    padding: 0px 2rem;
+    color: white;
+    .main-blue {
+      background-color: #243453;
+      box-shadow: none;
+      .notification-text {
+        margin: 50px 18px 10px 18px;
+        padding-left: 17px;
+        border-left: 3px solid white;
+        p {
+          margin: 0px;
+          color: #FFFFFF;
+          font-family: Roboto;
+          font-size: 24px;
+          letter-spacing: 0.45px;
+          line-height: 32px;
+        }
+      }
+      .notification-footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+        margin-right: 33px;
+        p {
+          margin: 5px 0px;
+          font-family: Roboto;
+          font-size: 28px;
+          font-style: italic;
+          line-height: 32px;
+          text-align: right;
+          font-weight: 200;
+          span {
+            font-weight: bold;
+          }
+        }
+        .logo-image {
+          margin-left: 7px;
+          width: 147px;
+          height: 60px;
+        }
+      }
+    }
+  }
+  
+  .spacer-minus5px {
+    margin-top: -6px;
+    height: 1px;
+  }
+  .spacer-minus10px {
+    margin-top: -11px;
+    height: 1px;
+  }
+  .spacer-5px {
+    height: 5px;
+  }
+  .spacer-10px {
+    height: 10px;
+  }
+  .spacer-15px {
+    height: 15px;
+  }
+  .spacer-20px {
+    height: 20px;
+  }
+  .spacer-25px {
+    height: 25px;
+  }
+  .spacer-30px {
+    height: 30px;
+  }
+  h3 {
+    font-weight: 700;
+    font-size: 22px;
+    padding: 0;
+    margin: 0;
+    text-transform: uppercase;
+    color: #356295;
+  }
+  .lottery-schedule {
+    .lottery-box {
+      width: 250px;
+      margin: 0 auto;
+      padding: 10px 0;
+      display: flex;
+      .lottery-box-logo {
+        width: 74px;
+      }
+      .lottery-box-description {
+        .lottery-name {
+          font-size: 20px;
+          font-weight: 700;
+          line-height: 1.3em;
+        }
+        .lottery-lines {
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 1.5em;
+        }
+      }
+    }
+  }
+  .my-balance-box {
+    padding: 10px 0;
+    .withdraw-action {
+      padding-top: 6px;
+      padding-bottom: 6px;
+      text-align: center;
+      a.withdraw-button {
+        display: inline-block;
+        background: #a6b001;
+        border-radius: 4px;
+        font-size: 12px;
+        color: white;
+        font-weight: 500;
+        text-align: center;
+        padding: 3px 15px;
+        text-transform: uppercase;
+        &:hover {
+          text-decoration: none;
+          background: #7b8501;
+        }
+      }
+    }
+    .current-balance-info {
+      text-align: center;
+      padding-top: 8px;
+      .current-balance-label {
+        font-weight: 400;
+        font-size: 14px;
+        color: black;
+        text-transform: uppercase;
+        display: inline-block;
+        line-height: 1em;
+        vertical-align: 2px;
+      }
+      .current-balance-value {
+        display: inline-block;
+        color: #da6c01;
+        font-size: 18px;
+        line-height: 1em;
+        font-weight: 500;
+        .number {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+  .ticket-row-outer {
+    .ticket-row {
+      .card-bg {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+}
+@media (max-width: 767px) {
+  #dashboard {
+    .main-white {
+      .main-white-text {
+        .weekly-value-row {
+          &.bottom-separation-below-md {
+            border-bottom: 1px solid #c3c3c3;
+          }
+        }
+      }
+    }
+    .top-notification-welcome {
+      .main-blue {
+        .notification-text {
+          margin: 35px 9px 10px 9px;
+          padding-left: 10px;
+          p {
+            font-size: 20px;
+            line-height: 28px;
+          }
+        }
+        .notification-footer {
+          margin-right: 15px;
+          p {
+            font-size: 24px;
+            line-height: 28px;
+          }
+        }
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
+  #dashboard {
+    .main-white {
+      .membership-badge-box {
+        .membership-badge-box-change-package {
+          position: absolute;
+          left: calc(50% + 150px);
+          top: 27px;
+          a {
+          }
+        }
+      }
+    }
+  }
+}

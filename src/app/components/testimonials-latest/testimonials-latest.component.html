@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col-md mb-4 mb-md-0" *ngFor="let testimonial of testimonialsData | slice:0:limit">
+      <img [src]=testimonial.photo alt="" class="avatar" *ngIf="testimonial.photo">
+      <div class="name">{{testimonial.name}}</div>
+      <div class="member" *ngIf="testimonial.type">{{testimonial.type}}</div>
+      <div class="stars" *ngIf="testimonial.stars">
+        <i class="fa fa-star" *ngFor="let i of array0to(testimonial.stars)"></i>
+      </div>
+      <div class="comments">
+          {{testimonial.comment}}
+      </div>
+    </div>
+  </div>

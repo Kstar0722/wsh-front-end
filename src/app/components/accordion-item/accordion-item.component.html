@@ -1,0 +1,4 @@
+<div class="accordion-item" [class.expanded]="itemsMeta.items[index]">
+  <div class="accordion-trigger" (click)="toggle()">{{trigger}} <fa name="chevron-down" class="expander-icon"></fa></div>
+  <div class="accordion-body" [@toggleItem]="itemsMeta.items[index] ? 'in' : 'out'" [ngStyle]='{overflow:"hidden"}'><div class="accordion-body-wrap" [innerHTML]="body"></div></div>
+</div>

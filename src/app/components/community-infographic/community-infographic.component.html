@@ -1,0 +1,23 @@
+<div class="wshful-comunity-rainbow text-center position-relative">
+  <span *ngIf="statsServiceRef.isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+  <div class="wshful-comunity-rainbow-bg" [class.is-loading]="statsServiceRef.isLoading">
+    <h2 class="section-title">Wshful Community</h2>
+    <div class="row no-gutters">
+
+      <div class="col-6 col-sm-3" *ngFor="let label of statsServiceRef.labels">
+        <div class="wshful-comunity-rainbow-box">
+          <div class="description">more than</div>
+          <div class="value">{{statsServiceRef.data[label]}}</div>
+          <div class="unit">{{label}}</div>
+          <div class="date">
+            <!-- <div class="row no-gutters justify-content-between">
+              <div class="col-auto">As of</div>
+              <div class="col-auto">23.02.2018</div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

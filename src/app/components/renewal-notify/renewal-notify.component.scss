@@ -1,0 +1,39 @@
+
+.notify {
+  background-color: rgb(255, 254, 251);
+  border-top: solid 2px rgb(240, 236, 207);
+  border-bottom: solid 2px rgb(240, 236, 207);
+  margin-bottom: 8px;
+  padding: 5px 0;
+  .notify-text {
+    text-align: center;
+    padding-left: 2%;
+    padding-right: 2%;
+    font-weight: 400;
+    &.description-message {
+      letter-spacing: 1px;
+      font-size: 14px;
+    }
+    &.feedback-info {
+      font-size: 20px;
+      font-weight: 300;
+    }
+  }
+  .notify-button-group {
+    padding-left: 18%;
+    padding-right: 18%;
+    .group-btn {
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 8px;
+      padding-top: 8px;
+      button {
+        outline: none;
+        width: 100%;
+        background-color: rgb(168, 175, 31);
+        font-weight: 500;
+        font-size: 16px;
+      }
+    }
+  }
+}

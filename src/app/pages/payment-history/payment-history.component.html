@@ -1,0 +1,134 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="container section-content private-pages-sides-wrap">
+    <div class="row no-gutters">
+      <div class="col-12 col-xl-3">
+        <app-user-menu></app-user-menu>
+      </div>
+      <div class="col-12 col-xl-9">
+        <div class="private-pages-right-side-wrap">
+          
+          <div class="position-relative" *ngIf="!detailsActive">
+
+            <div *ngIf="!isLoading && !paymentData?.length">
+              <div class="private-pages-info-text mt-3 mb-3 text-center">No payment has been made in the last 3 months</div>
+              <div class="text-center"><a class="btn btn-big-green" routerLink="/pricing">See Subscription plans</a></div>
+            </div>
+
+            <span *ngIf="isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+            <table *ngIf="!!paymentData?.length" class="table-custom-1 table--responsive my-results-table may-load" [class.is-loading]="isLoading">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of paymentData; let dataIndex = index" (click)="showDetails(row)">
+                  <td data-heading="Date">
+                    {{row.added_datetime | unifyDate | date: 'mediumDate'}}
+                  </td>
+                  <td data-heading="Status" class="status-predefined-{{row.text_status_helper}}">
+                    {{row.text_status}}
+                  </td>
+                  <td data-heading="Amount">
+                    {{row.amount | number: '1.2-2'}} {{row.currency}}
+                  </td>
+                  <td data-heading="Details">
+                    <a class="action-link">View details <fa name="chevron-right"></fa></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="detailsActive" class="payment-details">
+            <div class="heading">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-sm-auto order-sm-2">
+                  <a (click)="hideDetails()" class="action-link"><fa name="chevron-left"></fa>Go back to payments list</a>
+                </div>
+                <div class="col-sm-auto">
+                  <div class="title">Payment details</div>
+                </div>
+              </div>
+            </div>
+            <div class="big-list-items">
+              <div class="row-wrap">
+                <div class="row">
+                  <div class="col-sm-4">
+                    id
+                  </div>
+                  <div class="col-sm-8 text-sm-right item-val overflow-x-auto">
+                    {{paymentDetailsData.tid}}
+                  </div>
+                </div>
+              </div>
+              <div class="row-wrap">
+                <div class="row">
+                  <div class="col-sm-4">
+                    started
+                  </div>
+                  <div class="col-sm-8 text-sm-right item-val">
+                    {{paymentDetailsData.added_datetime | unifyDate | date: 'MMM d, y, h:mm a'}}
+                  </div>
+                </div>
+              </div>
+              <div class="row-wrap">
+                <div class="row">
+                  <div class="col-sm-4">
+                    recently updated
+                  </div>
+                  <div class="col-sm-8 text-sm-right item-val">
+                    {{paymentDetailsData.last_update_datetime | unifyDate | date: 'MMM d, y, h:mm a'}}
+                  </div>
+                </div>
+              </div>
+              <div class="row-wrap">
+                <div class="row">
+                  <div class="col-sm-4">
+                    finished
+                  </div>
+                  <div class="col-sm-8 text-sm-right item-val">
+                    {{paymentDetailsData.end_datetime | unifyDate | date: 'MMM d, y, h:mm a'}}
+                  </div>
+                </div>
+              </div>
+              <div class="row-wrap">
+                <div class="row">
+                  <div class="col-sm-4">
+                    status
+                  </div>
+                  <div class="col-sm-8 text-sm-right item-val status-predefined-{{paymentDetailsData.text_status_helper}}">
+                    {{paymentDetailsData.text_status}}
+                  </div>
+                </div>
+              </div>
+              <div class="row-wrap">
+                <div class="row">
+                  <div class="col-sm-4">
+                    amount
+                  </div>
+                  <div class="col-sm-8 text-sm-right item-val">
+                    {{paymentDetailsData.amount| number: '1.2-2'}} {{paymentDetailsData.currency}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>

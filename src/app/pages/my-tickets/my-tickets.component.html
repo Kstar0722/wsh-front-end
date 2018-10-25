@@ -1,0 +1,90 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="container section-content private-pages-sides-wrap">
+      <div class="row no-gutters">
+        <div class="col-12 col-xl-3">
+          <app-user-menu></app-user-menu>
+        </div>
+        <div class="col-12 col-xl-9">
+          <div class="private-pages-right-side-wrap">
+
+            <div class="position-relative">
+              <span *ngIf="authService.requestingCurrentSessionData || isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+              <div class="may-load" [class.is-loading]="authService.requestingCurrentSessionData">
+                <div *ngIf="!authService.isSubscribed() && !authService.requestingCurrentSessionData">
+                  <div class="private-pages-info-text mt-3 mb-3 text-center">The tickets are waiting for you!</div>
+                  <div class="text-center"><a class="btn btn-big-green" routerLink="/subscription-plan">Start a subscription</a></div>
+                  <div class="private-pages-info-text mt-3 mb-3 text-center">and get reserved tickets!</div>
+                </div>
+    
+                <div *ngIf="authService.isSubscribed()">
+    
+                  <div class="ticket-row-outer" *ngFor="let ticket of ticketsData">
+                    <div class="row pr-md-1 pl-md-1 ticket-row ticket-row-euromillions">
+                      <div class="col-lg col-md-7">
+                        <div class="card-bg">
+                          <div class="row">
+                            <div class="col-md-auto">
+                              <img src="/assets/images/icon-{{ticket.draw.lottery_type}}.png">
+                            </div>
+                            <div class="col-md-auto">
+                              <div class="title">{{ticket.draw.lottery_name}}</div>
+                              <div class="subtitle">Next draw: {{ticket.draw.local_datetime | unifyDate | date: 'mediumDate'}}, {{ticket.draw.local_datetime | unifyDate | date: 'shortTime'}}</div>
+                              <div class="lines-group">
+                                <div class="line" *ngFor="let line of ticket.lines">
+                                  <span 
+                                    *ngFor="let ball of line.balls"
+                                    class="number"
+                                    [ngClass]="{special: ball.special}"
+                                  >{{ball.number}}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg col-md-5 text-center">
+                        <div class="card-bg">
+                          <div class="title">Ticket Scan</div>
+                          <div class="subtitle">See the real-deal!</div>
+                          <div class="description">You can preview a scan your real lottery ticket</div>
+                          <div>
+                            <a 
+                              class="btn btn-big-green btn-big-green-wire" 
+                              [appPopUp]='{openContentOnClick: true}'
+                            >
+                              <div class="app-pop-up">
+                                <div class="popup-wrap">
+                                  <div class="overflow">
+                                    <span class="popup-content"><div><img [src] = "ticket.graphic" alt="Loading ticket..."></div></span>
+                                  </div>
+                                  <span class="close close-box">&times;</span>
+                                </div>
+                              </div>
+                              View Ticket Scan
+                              
+                            </a>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>

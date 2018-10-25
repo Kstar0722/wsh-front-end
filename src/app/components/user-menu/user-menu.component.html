@@ -1,0 +1,40 @@
+<div class="section section-user-menu section-user-menu-desktop">
+  <ul class="list-reset level-1">
+    <li *ngFor="let group of groups"> 
+      <span class="d-block position-relative">
+        <a 
+          [routerLink]="group.heading.route" 
+          class="user-menu-heading desktop"
+          routerLinkActive="active">
+            <fa [name]="group.heading.iconName"></fa> 
+            {{group.heading.label}}
+        </a>
+      </span>
+      <ul class="list-reset level-2">
+        <li *ngFor="let item of group.items" [ngClass]="{showOnlyIfSubscribed: item.showOnlyIfSubscribed, userSubscribed: userSubscribed && item.showOnlyIfSubscribed}"><a [routerLink] = "item.route" routerLinkActive="active">{{item.label}}</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="section section-user-menu section-user-menu-mobile">
+    <ul class="list-reset level-1">
+      <li *ngFor="let group of groups"
+        (mouseenter)="expandGroup($event, group)"
+        (mouseleave)="collapseGroup($event, group)"
+      > 
+        <span class="d-block position-relative">
+          <a 
+            routerLinkActive="active"
+            class="user-menu-heading desktop" 
+            (click)="goToRoute(group)">
+              <fa [name]="group.heading.iconName"></fa> 
+              {{group.heading.label}}
+          </a>
+        </span>
+        <ul class="list-reset level-2">
+          <li *ngFor="let item of group.items"><a [routerLink] = "item.route" routerLinkActive="active">{{item.label}}</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>

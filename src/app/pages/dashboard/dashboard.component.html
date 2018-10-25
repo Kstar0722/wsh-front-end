@@ -1,0 +1,366 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="container section-content private-pages-sides-wrap">
+    <div class="row no-gutters">
+      <div class="col-12 col-xl-3">
+        <app-user-menu></app-user-menu>
+      </div>
+      <div class="col-12 col-xl-9">
+        <app-renewal-notify *ngIf="renewal_notify"></app-renewal-notify>
+
+        <div>
+          <div class="position-relative">
+            <span *ngIf="authService.requestingCurrentSessionData" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+            <div class="may-load" [class.is-loading]="authService.requestingCurrentSessionData">
+              <div *ngIf="!authService.isSubscribed()" class="private-pages-right-side-wrap">
+                <div class="private-pages-info-text mt-2 mb-5 text-center">
+                  Hello {{authService.user?.first_name}} <br>
+                  You are currently registered with Wshful but not subscribed. <br>
+                  <strong>Choose you plan below to subscribe to Wshful now.</strong>
+                </div>
+                <app-pricing-plans *ngIf="!!authService.user"></app-pricing-plans>
+              </div>
+              <div *ngIf="authService.isSubscribed()" id="dashboard">
+
+
+                <!-- DASHBOARD -->
+
+                <div *ngIf="isShowMessage" class="private-pages-right-side-wrap top-notification-welcome">
+                  <div class="row m-0">
+                    <div class="col-12 main-white main-blue">
+                        <div class="notification-text">
+                            <p>Luck is being in the right place, at the right time.</p>
+                            <p>But what if you can be at the right place, all the time?</p>
+                            <p>Then you’ve made your own luck.</p>
+                        </div>
+                        <div class="notification-footer">
+                          <p>Be in every draw. <span>Always.</span></p>
+                          <img alt="Wshful logo" class="logo-image" src="/assets/images/wshful-logo-white.png">
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="private-pages-right-side-wrap">
+                  <div class="row m-0">
+                    <div class="col-12 main-white">
+                      <div class="membership-badge-box" *ngIf="getSubscriptionPackageData()">
+                        <div class="membership-badge {{getSubscriptionPackageData().key}}">
+                          <div class="membership-badge-inner">
+                            {{getSubscriptionPackageData().name}} Membership
+                          </div>
+                        </div>
+
+                        <div class="membership-badge-box-change-package">
+                          <a routerLink="/subscription-plan">Change Package</a>
+                        </div>
+                      </div>
+
+                      <div class="spacer-5px"></div>
+
+                      <div class="main-white-text">
+                        <h3>Every week you get</h3>
+
+                        <div class="spacer-20px"></div>
+
+                        <div class="row">
+                          <div class="col-12 col-md-6">
+                            <div class="weekly-value-row bottom-separation">
+                              <div class="weekly-value-title">Lottery Lines</div>
+                              <div class="weekly-value special">{{subscriptionsSummary?.lottery_lines_amount}}</div>
+                            </div>
+                            <div class="weekly-value-row bottom-separation-below-md">
+                              <div class="weekly-value-title">Cost per Line</div>
+                              <div class="weekly-value">{{subscriptionsSummary?.cost_per_line}}</div>
+                            </div>
+                          </div>
+
+                          <div class="col-12 col-md-6" *ngIf="subscriptionsSummary?.bonus_syndicate_memberships.length > 0">
+                            <div class="weekly-value-row bottom-separation ml-md-auto mr-md-2">
+                              <div class="weekly-value-title wider">Subscribed Syndicates</div>
+                              <div class="weekly-value special">{{subscriptionsSummary?.subscribed_syndicate_memberships.length}}</div>
+                            </div>
+                            <div class="weekly-value-row ml-md-auto mr-md-2 bottom-separation-below-md">
+                              <div class="weekly-value-title wider">Bonus Syndicates</div>
+                              <div class="weekly-value special">{{subscriptionsSummary?.bonus_syndicate_memberships.length}}</div>
+                            </div>
+                          </div>
+
+
+                          <div class="col-12 col-md-6" *ngIf="subscriptionsSummary?.bonus_syndicate_memberships.length == 0">
+                            <div class="weekly-value-row ml-md-auto mr-md-2">
+                              <div class="weekly-value-title wider">Subscribed Syndicates</div>
+                              <div class="weekly-value special">{{subscriptionsSummary?.subscribed_syndicate_memberships.length}}</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="spacer-15px"></div>
+
+                        <div class="lottery-schedule">
+                          <div class="row">
+
+                            <ng-container *ngIf="subscriptionsSummary?.lottery_lines_list.length > 2">
+
+                              <div class="col-12 col-md-6">
+                                <ng-container *ngFor="let lotteryData of subscriptionsSummary?.lottery_lines_list">
+                                  <div class="lottery-box" *ngIf="isRegularLottery(lotteryData)">
+                                    <div class="lottery-box-logo">
+                                      <img src="/assets/images/lottery-ball/{{lotteryData.lottery_key}}-white-bg.png" height="66" />
+                                    </div>
+                                    <div class="lottery-box-description">
+                                      <div class="lottery-name">{{lotteryData.lottery_name}}</div>
+                                      <div class="lottery-lines">
+                                        <div *ngFor="let drawTime of lotteryData.draw_times">
+                                          {{lotteryData.lines_per_draw}} Lines every {{drawTime.weekday}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+
+                              <div class="col-12 col-md-6">
+                                <ng-container *ngFor="let lotteryData of subscriptionsSummary?.lottery_lines_list">
+                                  <div class="lottery-box" *ngIf="!isRegularLottery(lotteryData)">
+                                    <div class="lottery-box-logo">
+                                      <img src="/assets/images/lottery-ball/{{lotteryData.lottery_key}}-white-bg.png" height="66" />
+                                    </div>
+                                    <div class="lottery-box-description">
+                                      <div class="lottery-name">{{lotteryData.lottery_name}}</div>
+                                      <div class="lottery-lines">
+                                        <div *ngFor="let drawTime of lotteryData.draw_times">
+                                          {{lotteryData.lines_per_draw}} Lines every {{drawTime.weekday}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </ng-container>
+                              </div>
+
+                            </ng-container>
+
+                            <ng-container *ngIf="subscriptionsSummary?.lottery_lines_list.length <= 2">
+                              
+                              <ng-container *ngFor="let lotteryData of subscriptionsSummary?.lottery_lines_list">
+                                <div class="col-12 col-md-6" *ngIf="isRegularLottery(lotteryData)">
+                                  <div class="lottery-box">
+                                    <div class="lottery-box-logo">
+                                      <img src="/assets/images/lottery-ball/{{lotteryData.lottery_key}}-white-bg.png" height="66" />
+                                    </div>
+                                    <div class="lottery-box-description">
+                                      <div class="lottery-name">{{lotteryData.lottery_name}}</div>
+                                      <div class="lottery-lines">
+                                        <div *ngFor="let drawTime of lotteryData.draw_times">
+                                          {{lotteryData.lines_per_draw}} Lines every {{drawTime.weekday}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                              <ng-container *ngFor="let lotteryData of subscriptionsSummary?.lottery_lines_list">
+                                <div class="col-12 col-md-6" *ngIf="!isRegularLottery(lotteryData)">
+                                  <div class="lottery-box">
+                                    <div class="lottery-box-logo">
+                                      <img src="/assets/images/lottery-ball/{{lotteryData.lottery_key}}-white-bg.png" height="66" />
+                                    </div>
+                                    <div class="lottery-box-description">
+                                      <div class="lottery-name">{{lotteryData.lottery_name}}</div>
+                                      <div class="lottery-lines">
+                                        <div *ngFor="let drawTime of lotteryData.draw_times">
+                                          {{lotteryData.lines_per_draw}} Lines every {{drawTime.weekday}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </ng-container>
+
+                            </ng-container>
+
+                          </div>
+
+                          <div class="spacer-15px"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="spacer-30px"></div>
+
+                  <div class="row m-0">
+                    <div class="col-12 main-white my-balance-box pl-md-5 pr-md-5">
+                      <div class="row">
+                        <div class="order-1 col-12 col-md-7 pr-md-5">
+                          <div class="current-balance-info">
+                            <div class="current-balance-label pr-md-3 pr-1">Current Balance</div>
+                            <div class="current-balance-value">&pound;<span class="number">{{authService.user?.balance | number: "1.2-2"}}</span></div>
+                          </div>
+                        </div>
+
+                        <div class="order-md-0 order-2 col-md-5">
+                          <div class="withdraw-action pl-md-5">
+                            <a routerLink="/my-balance" class="withdraw-button">Withdraw</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="spacer-15px"></div>
+
+                <div class="private-pages-right-side-wrap">
+                  <div class="spacer-minus5px"></div>
+                  <h3>Your Lottery Lines</h3>
+                  <div class="spacer-15px"></div>
+
+                  <div class="row m-0" *ngIf="subscriptionsSummary">
+                    <div class="col-12 main-white">
+                      <div class="d-md-none text-center mt-1 mb-1 text-uppercase">
+                        Choose a syndicate<br /> to view your tickets below
+                      </div>
+
+                      <div class="row">
+
+                        <div class="col-12" [ngClass]="{'col-md-6': subscriptionsSummary.bonus_syndicate_memberships.length > 0}">
+                          <div class="syndicates-list-box">
+                            <div class="syndicates-header">Subscribed Syndicates</div>
+                            <div class="syndicates-list">
+
+                              <ng-container *ngFor="let syndicateData of subscriptionsSummary?.subscribed_syndicate_memberships">
+                                <div class="syndicate-item" [ngClass]="{'active': syndicateData.membership.syndicate.id == activeSyndicate}"
+                                     (click)="chooseSyndicate(syndicateData.membership.syndicate.id)">
+                                  <div class="syndicate-item-lotteries">
+                                    <ng-container *ngFor="let syndicateLottery of syndicateData.lotteries_data">
+                                      <img src="/assets/images/lottery-ball/{{syndicateLottery.lottery_key}}-white-bg.png" height="25" />
+                                    </ng-container>
+                                  </div>
+                                  <div class="syndicate-item-name">{{correctSyndicateName(syndicateData.membership.syndicate.id)}}</div>
+                                </div>
+                              </ng-container>
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" *ngIf="subscriptionsSummary?.bonus_syndicate_memberships.length > 0">
+                          <div class="syndicates-list-box">
+                            <div class="syndicates-header">Bonus Syndicates</div>
+                            <div class="syndicates-list">
+
+                              <ng-container *ngFor="let syndicateData of subscriptionsSummary?.bonus_syndicate_memberships">
+                                <div class="syndicate-item" [ngClass]="{'active': syndicateData.membership.syndicate.id == activeSyndicate}"
+                                     (click)="chooseSyndicate(syndicateData.membership.syndicate.id)">
+                                  <div class="syndicate-item-lotteries">
+                                    <ng-container *ngFor="let syndicateLottery of syndicateData.lotteries_data">
+                                      <img src="/assets/images/lottery-ball/{{syndicateLottery.lottery_key}}-white-bg.png" height="25" />
+                                    </ng-container>
+                                  </div>
+                                  <div class="syndicate-item-name">{{correctSyndicateName(syndicateData.membership.syndicate.id)}}</div>
+                                </div>
+                              </ng-container>
+
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <div class="spacer-15px"></div>
+
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="subscriptionsSummary && !hasActiveSyndicateTickets()">
+                    <div class="spacer-30px"></div>
+
+                    <div class="row m-0">
+                      <div class="col-12 main-white text-center p-3">
+                        <h3>
+                          You will receive your lottery tickets<br /> in the next couple minutes.
+                        </h3>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngFor="let ticket of ticketsData">
+                    <div class="ticket-row-outer" *ngIf="ticket.syndicate.id == activeSyndicate">
+                      <div class="row ticket-row ticket-row-{{ticket.draw.lottery_type}}">
+                        <div class="col-lg col-md-7">
+                          <div class="card-bg">
+                            <div class="row">
+                              <div class="col-md-auto">
+                                <img src="/assets/images/icon-{{ticket.draw.lottery_type}}.png">
+                              </div>
+                              <div class="col-md-auto">
+                                <div class="title">{{ticket.draw.lottery_name}}</div>
+                                <div class="subtitle">Next draw: {{ticket.draw.local_datetime | unifyDate | date: 'mediumDate'}}, {{ticket.draw.local_datetime | unifyDate | date: 'shortTime'}}</div>
+                                <div class="lines-group">
+                                  <div class="line" *ngFor="let line of ticket.lines">
+                                    <span
+                                            *ngFor="let ball of line.balls"
+                                            class="number"
+                                            [ngClass]="{special: ball.special}"
+                                    >{{ball.number}}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg col-md-5 text-center">
+                          <div class="card-bg">
+                            <div class="title">Ticket Scan</div>
+                            <div class="subtitle">See the real-deal!</div>
+                            <div class="description">You can preview a scan your real lottery ticket</div>
+                            <div>
+                              <a
+                                      class="btn btn-big-green btn-big-green-wire"
+                                      [appPopUp]='{openContentOnClick: true}'
+                              >
+                                <div class="app-pop-up">
+                                  <div class="popup-wrap">
+                                    <div class="overflow">
+                                      <span class="popup-content"><div><img [src] = "ticket.graphic" alt="Loading ticket..."></div></span>
+                                    </div>
+                                    <span class="close close-box">&times;</span>
+                                  </div>
+                                </div>
+                                View Ticket Scan
+
+                              </a>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+
+                </div>
+
+
+                <!-- END DASHBOARD -->
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<div class="order-details">
+  <p class="text-center">
+    <img src="/assets/images/cart.png" alt="">
+  </p>
+  <h2 class="text-center">Your order details</h2>
+  
+  <div class="payment-details" [ngClass]="{'may-load': true, 'is-loading':disabledIf, 'has-discount': plansServiceRef.plans[selectedPlanName]?.planVars.reduction != null && plansServiceRef.plans[selectedPlanName]?.planVars.reduction != 0}">
+    <div class="text-description">
+      You have chosen
+      <strong>{{selectedPlanName | uppercase}}</strong> membership
+      <br> 
+      {{
+        ( plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.euromillions + plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.euromillions ) *
+        plansServiceRef.plans[selectedPlanName]?.planVars.weeklyDraws
+      }} lines per week for
+      <strong>
+        <span *ngIf="!voucherData.voucherValid">{{plansServiceRef.plans[selectedPlanName]?.planVars.costPerWeek}}</span> 
+        <span *ngIf="voucherData.voucherValid">
+          <span class="currency" [innerHTML]="plansServiceRef.plans[selectedPlanName]?.planVars.currencySymbol"></span>{{voucherData.voucherInfo?.amount / plansServiceRef.plans[selectedPlanName]?.planVars.weeks}}
+        </span>
+        per week
+      </strong> subscription
+    </div>
+    <div class="payment-description" *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.reduction == 0">
+      Total:
+      <span class="package-price">
+        <span *ngIf="!voucherData.voucherValid"><span class="currency" [innerHTML]="plansServiceRef.plans[selectedPlanName]?.planVars.currencySymbol"></span><span class="price">{{plansServiceRef.plans[selectedPlanName]?.planVars.price}}</span></span>
+        <span *ngIf="voucherData.voucherValid"><span class="currency" [innerHTML]="plansServiceRef.plans[selectedPlanName]?.planVars.currencySymbol"></span><span class="price">{{voucherData.voucherInfo.amount}}</span></span>
+      </span>
+      <div class="vat-included-info">Price includes VAT</div>
+    </div>
+    <div class="payment-description" *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.reduction != null && plansServiceRef.plans[selectedPlanName]?.planVars.reduction != 0">
+      <div>
+        Total:
+        <span class="original-price">
+          <span class="currency" [innerHTML]="plansServiceRef.plans[selectedPlanName]?.planVars.currencySymbol"></span><span class="price">{{plansServiceRef.plans[selectedPlanName]?.planVars.originalPrice}}</span>
+        </span>
+      </div>
+      <div>
+        Discount:
+        <span class="discount-price">
+          <span class="currency" [innerHTML]="plansServiceRef.plans[selectedPlanName]?.planVars.currencySymbol"></span><span class="price">{{plansServiceRef.plans[selectedPlanName]?.planVars.reduction}} ({{(1-(plansServiceRef.plans[selectedPlanName]?.planVars.price / plansServiceRef.plans[selectedPlanName]?.planVars.originalPrice))*100 | number : '1.0-0'}}% OFF)</span>
+        </span>
+      </div>
+      <div>
+        Price you pay:
+        <span class="package-price">
+          <span class="currency" [innerHTML]="plansServiceRef.plans[selectedPlanName]?.planVars.currencySymbol"></span><span class="price">{{plansServiceRef.plans[selectedPlanName]?.planVars.price}}</span>
+        </span>
+        <div class="vat-included-info">Price includes VAT</div>
+      </div>
+    </div>
+    <div class="lines-included">
+      <div>
+        <strong>{{plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.euromillions * plansServiceRef.plans[selectedPlanName]?.planVars.weeks * plansServiceRef.plans[selectedPlanName]?.planVars.weeklyDraws}} lottery lines</strong> EuroMillions
+      </div>
+      <div>
+        <strong>{{plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.megamillions * plansServiceRef.plans[selectedPlanName]?.planVars.weeks * plansServiceRef.plans[selectedPlanName]?.planVars.weeklyDraws}} lottery lines</strong> Mega&nbsp;Millions
+      </div>
+      <div *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.powerball > 0" style="padding-top: 5px;">
+        Special bonus:<br />
+        <strong>{{plansServiceRef.plans[selectedPlanName]?.planVars.lotteryLines.powerball}} lottery lines</strong> PowerBall
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showVoucherField">
+    <div class="payment-details" *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.reduction == null || plansServiceRef.plans[selectedPlanName]?.planVars.reduction == 0">
+      <app-voucher-validation 
+        [forPlan]="plansServiceRef.plans[selectedPlanName]"
+        (done)="voucherValidationDone($event)"
+        [isDisabled]="disabledIf"
+      ></app-voucher-validation>
+    </div>
+  </div>
+  <form class="confirmations" #f = "ngForm" (ngSubmit)="onSubmit(f)" [class.tried-submit]="triedSubmit">
+    <fieldset [disabled]="disabledIf">
+      <div class="form-row form-row-errors errors-group" *ngIf="formErrors.length">
+        <ul class="m-0">
+          <li *ngFor="let error of formErrors error-text">{{error}}</li>
+        </ul>
+      </div>
+      <div>
+        <input type="checkbox" required name="verifyAge" id="verifyAge" [(ngModel)]="verifyAge">
+        <label for="verifyAge">I confirm that I am over the age 18 and agree to have my age 
+          <a [appPopUp]='{openContentOnClick: true}'>
+            verified
+            <div class="app-pop-up">
+              <div class="popup-wrap">
+                <div class="overflow">
+                  <div class="age-verify-dialog">
+                    <h4 class="mt-0">Age verified</h4>
+                    <p>Cloud Canyon will verify your age against the Electoral Register and DVLA database. We use AgeChecked.com to do this.</p>
+                    <p>If our results show a discrepancy between your stated Date of Birth and our verification, we may ask you to submit evidence to demonstrate your true age.</p>
+                  </div>
+                </div>
+                <span class="close close-box">&times;</span>
+              </div>
+            </div>
+          </a>.
+        </label>
+      </div>
+      <div>
+        <input type="checkbox" required name="acceptTerms" id="acceptTerms" [(ngModel)]="acceptTerms">
+        <label for="acceptTerms">I accept the
+          <a href="/terms-and-conditions" target="_blank">Terms & Conditions</a> and the
+          <a href="/privacy-policy" target="_blank">Privacy Policy</a>
+        </label>
+      </div>
+      <div>
+        <input type="checkbox" required name="acceptRecurrence" id="acceptRecurrence" [(ngModel)]="acceptRecurrence">
+        <label for="acceptRecurrence">
+            <span class="for-regular-price" *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.reduction != null && plansServiceRef.plans[selectedPlanName]?.planVars.reduction != 0">I agree payment will recur every four weeks at full price and that I can cancel any time.</span>
+            <span class="for-discount-price" *ngIf="plansServiceRef.plans[selectedPlanName]?.planVars.reduction == null || plansServiceRef.plans[selectedPlanName]?.planVars.reduction == 0">I agree payment will recur every four weeks and that I can cancel any time.</span>
+        </label>
+      </div>
+      <div *ngIf="showOptInEmailsField">
+          <input type="checkbox" name="optInEmails" id="optInEmails" [(ngModel)]="optInEmails">
+          <label for="optInEmails">Opt in to bonus emails and free lottery ticket promotions? We will NOT share your data with any third parties.</label>
+      </div>
+      
+      
+
+    </fieldset>
+  </form>
+  <div class="text-center mt-2"><a (click)="onSubmit(f)" class="btn">Proceed to Payment</a></div>
+</div>

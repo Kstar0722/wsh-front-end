@@ -1,0 +1,33 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="container section-content private-pages-sides-wrap">
+    <div class="row no-gutters">
+      <div class="col-12 col-xl-3">
+        <app-user-menu></app-user-menu>
+      </div>
+      <div class="col-12 col-xl-9">
+        <div class="private-pages-right-side-wrap">
+          <div class="successful-update-msg" *ngIf="showUpdateSuccessfullMsg">Your new details have been updated.</div>
+          <div class="section-update-profile">
+            <app-update-user-form
+              submitBtnLabel = 'Update profile'
+              [disableFields] = disabledFields
+              (done)="showUpdateSuccessfullMsgCall($event)"
+            ></app-update-user-form>
+          </div>
+          <div *ngIf="authService.isSubscribed()"><app-cancel-subscription></app-cancel-subscription></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>

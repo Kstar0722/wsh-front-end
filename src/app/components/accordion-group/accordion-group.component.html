@@ -1,0 +1,3 @@
+<div class="accordion-group">
+    <app-accordion-item *ngFor="let item of accordionItems; let i = index;" [trigger]="item[triggerKey]" [body]="item[bodyKey]" [itemsMeta]="itemsMeta" [index]="i"></app-accordion-item>
+</div>

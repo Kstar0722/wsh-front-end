@@ -1,0 +1,8 @@
+<ngx-slick-carousel class="carousel slick-slider-arrows-wrapper" [config]='carouselOpts'>
+  <div ngxSlickItem *ngFor="let testimonial of testimonialsData | slice:0:limit">
+    <div class="slide-inner">
+      <div class="comment">{{testimonial.comment}}</div>
+      <div class="name">{{testimonial.name}}</div>
+    </div>
+  </div>
+</ngx-slick-carousel>

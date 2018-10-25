@@ -1,0 +1,20 @@
+<div class="row may-load">
+  <div class="col-sm-4 col-12" *ngFor="let planName of Object.keys(plans)">
+    <div class="position-relative">
+      <span *ngIf="plansServiceRef.plansLoading" class="icon-loader text-white"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+      <div class="plan-card plan-card-{{planName | lowercase}} plan-card-simple may-load position-relative" [ngClass]="{'is-loading': plansServiceRef.plansLoading}">
+        <div class="card-title text-{{planName | lowercase}}">{{plans[planName]?.planVars.chances}} chances</div>
+        <div class="card-subtitle">only <span class="font-weight-bold text-{{planName | lowercase}}">{{plans[planName]?.planVars.costPerWeek}}</span> per week</div>
+        <div class="card-syndicates-amount text-{{planName | lowercase}}">{{plans[planName]?.planVars.syndicates}} <span *ngIf="plans[planName]?.planVars.syndicates == 1">syndicate</span><span *ngIf="plans[planName]?.planVars.syndicates != 1">syndicates</span></div>
+        <div class="plan-includes for-mobile">
+          <div class="plan-includes-title">
+            {{plans[planName]?.planVars.lotteryLines}} lottery lines
+          </div>
+        </div>
+        <div class="card-stars">
+          <img *ngFor="let i of array0to(plans[planName]?.planVars.syndicates)" src="/assets/images/star-{{planName | lowercase}}.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

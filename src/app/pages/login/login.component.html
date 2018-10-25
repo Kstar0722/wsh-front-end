@@ -1,0 +1,77 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="section section-login">
+    <div class="container">
+      <div class="section-content">
+
+        <div class="position-relative">
+          <span *ngIf="formIsWaitingForResponse" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+          <form class="text-center may-load" [ngClass]="{'is-loading': formIsWaitingForResponse, 'tried-submit': triedSubmit}" (ngSubmit)="loginFormSubmit()" [formGroup]="form">
+            <div class="errors-group d-inline-block p-1" *ngIf="errors?.length">
+              <ul class="m-0">
+                <li class="error-text" *ngFor="let error of errors">{{error}}</li>
+              </ul>
+            </div>
+            
+            <fieldset [disabled]="formIsWaitingForResponse" *ngIf="!route.snapshot.queryParams.user_session">
+              <div class="p-1">
+                <label for="email" class="text-left">
+                  Email <br>
+                  <input type="email" placeholder="e-mail" id="email" name="email" formControlName="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                  <span *ngIf="triedSubmit && !!form.get('email').errors?.pattern" class="field-error">Please provide a valid email address.</span>
+                  <span *ngIf="triedSubmit && !!form.get('email').errors?.required" class="field-error">Please provide an email address.</span>
+                </label>
+                
+              </div>
+              <div class="p-1">
+                <label for="password" class="text-left">
+                  Password <br>
+                  <span class="d-block position-relative">
+                    <span (click)="_togglePwdType()" class="button-show-pwd" [class.active]="_showPwd"><fa name="eye"></fa></span>
+                    <input type="{{_pwdType}}" type="password" placeholder="password" id="password" name="password" formControlName="password" required minlength="4">
+                  </span>
+                  <span *ngIf="triedSubmit && !!form.get('password').errors?.minlength" class="field-error">Password must have at least 4 characters.</span>
+                  <span *ngIf="triedSubmit && !!form.get('password').errors?.required" class="field-error">Please provide a password.</span>
+
+                </label>
+              </div>
+              <div>
+                <input type="checkbox" id="remember" name="remember" formControlName="rememberme">
+                <label for="remember">Keep me logged in</label>
+              </div>
+              <div class="p-1">
+                <input type="submit" value="Login"  name="inputSubmit">
+              </div>
+              <div class="social-buttons login-social-box mt-4 mb-4">
+                <button (click)="loginWith('facebook')" class="btn btn-block btn-social btn-facebook mb-1">
+                    <fa name="facebook-f"></fa> Sign in with Facebook
+                </button>
+                <button (click)="loginWith('twitter')" class="btn btn-block btn-social btn-twitter">
+                    <fa name="twitter"></fa> Sign in with Twitter
+                </button>
+              </div>
+              <p>You don't have an account? <a routerLink="/register">Register Now</a></p>
+              <p>Forgot password? <a routerLink="/password-recovery">Recover Password</a></p>
+            </fieldset>
+            
+            
+          </form>
+          
+        </div>
+            
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>
+  

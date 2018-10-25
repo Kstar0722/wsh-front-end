@@ -1,0 +1,124 @@
+<div class="header-wrap">
+    <app-header></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="container section-content private-pages-sides-wrap">
+      <div class="row no-gutters">
+        <div class="col-12 col-xl-3">
+          <app-user-menu></app-user-menu>
+        </div>
+        <div class="col-12 col-xl-9">
+          <div class="private-pages-right-side-wrap">
+            <div class="position-relative">
+              <span *ngIf="authService.requestingCurrentSessionData" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+              <div class="may-load" [class.is-loading]="authService.requestingCurrentSessionData">
+                <div class="row pr-md-1 pl-md-1 mt-1 custom-cards">
+                  <div class="col-md mb-2">
+                    <div class="card-bg h-100 mt-0">
+                      <div class="custom-card-name">Your account</div>
+                      <div class="row justify-content-between smaller">
+                        <div class="col-5">Name</div>
+                        <div class="col-7 text-right"><strong>{{authService.user?.first_name}} {{authService.user?.last_name}}</strong></div>
+                      </div>
+                      <div class="row justify-content-between smaller">
+                        <div class="col-5">Email/Username</div>
+                        <div class="col-7 text-right break-word"><strong>{{authService.user?.email}}</strong></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md mb-2">
+                    <div class="card-bg h-100 mt-0">
+                      <div class="custom-card-name">Your Details</div>
+                      <div class="row justify-content-between smaller">
+                        <div class="col-5">Address</div>
+                        <div class="col-7 text-right"><strong>{{authService.user?.address1}}, {{authService.user?.city}}, {{authService.user?.country.name}}</strong></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="authService.isSubscribed()">
+                  <div class="pr-md-1 pl-md-1 custom-cards">
+                    <div class="card-bg">
+                      <div class="custom-card-name">My Package</div>
+                      <div class="change-card-package-info text-center">
+                        <div class="price">{{currentPackageData?.package_price.price}} {{currentPackageData?.package_price.currency}}</div>
+                        <div class="price-per-week"><strong>{{currentPackageData?.price_per_week.full}} per week</strong> for 4 weeks</div>
+                      </div>
+                      <form class="change-card-form" (submit)="onSubmit(f)" #f = "ngForm">
+                        <div class="form-title">Change your card</div>
+                        <ul class="list-reset info-list">
+                          <li><fa name="check-circle"></fa> You may change your card at any time and stay in the same syndicates.</li>
+                          <li><fa name="check-circle"></fa> You will be taken through to our payments page, where you may add your new card and make payment.</li>
+                          <li><fa name="check-circle"></fa> When you change card we will  take a payment immediately, which will cover your next renewal, immediately after the current run is complete.</li>
+                          <li><fa name="check-circle"></fa> Your subscription will continue as normal thereafter until you cancel.</li>
+                        </ul>
+                        <div class="subscription-intervals">
+                          <div>Your current subscription expires {{authService.user?.packages[0].end_datetime | unifyDate | date: 'mediumDate'}}.</div>
+                          <div>This payment will renew your subscription until {{addDaysToDate(authService.user?.packages[0].end_datetime, 27) | date: 'mediumDate' }}.</div>
+                        </div>
+                        <div class="position-relative">
+                          <span *ngIf="loadingCurrentPakageData || requestingPayment" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                          <fieldset [disabled]="loadingCurrentPakageData || requestingPayment">
+                            <div class="form-row-errors errors-group" *ngIf="formErrors.length">
+                              <ul class="m-0">
+                                  <li *ngFor="let error of formErrors error-text">{{error}}</li>
+                              </ul>
+                            </div>
+                            <div class="field-error" *ngIf="triedSubmit && !f.valid">Please check all the boxes to continue.</div>
+                            <div>
+                              <input type="checkbox" required name="verifyAge" id="verifyAge" [(ngModel)]="verifyAge">
+                              <label for="verifyAge">I confirm that I am over the age 18 and agree to have my age
+                                <a [appPopUp]='{openContentOnClick: true}'>
+                                  verified
+                                  <div class="app-pop-up">
+                                    <div class="popup-wrap">
+                                      <div class="overflow">
+                                        <div class="age-verify-dialog">
+                                          <h4 class="mt-0">Age verified</h4>
+                                          <p>Cloud Canyon will verify your age against the Electoral Register and DVLA database. We use AgeChecked.com to do this.</p>
+                                          <p>If our results show a discrepancy between your stated Date of Birth and our verification, we may ask you to submit evidence to demonstrate your true age.</p>
+                                        </div>
+                                      </div>
+                                      <span class="close close-box">&times;</span>
+                                    </div>
+                                  </div>
+                                </a>.
+                              </label>
+                            </div>
+                            <div>
+                              <input type="checkbox" required name="acceptTerms" id="acceptTerms" [(ngModel)]="acceptTerms">
+                              <label for="acceptTerms">I accept the
+                                <a href="/terms-and-conditions" target="_blank">Terms & Conditions</a>, 
+                                <a href="/privacy-policy" target="_blank">Privacy Policy</a> and the 
+                                <a href="/subscription-agreement" target="_blank">Subscription Agreement</a>
+                              </label>
+                            </div>
+                            <div>
+                              <input type="submit" value="Update your payment card" class="w-100" />
+                            </div>
+                          </fieldset>
+                        </div>
+                      </form>
+                    </div>
+                    <p class="text-center mt-2">Your connection is secured with <img src="/assets/images/shield-check.png" alt=""> <a target="_blank" href="https://en.wikipedia.org/wiki/Transport_Layer_Security">SSL certificate</a> and encrypted with 256-bit key.</p>
+                  </div>
+                </div>
+                <div *ngIf="!authService.isSubscribed() && !authService.requestingCurrentSessionData" class="mt-4">
+                  <p class="text-center mt-2 mb-4">You are not a subscriber. Please select one of the plans below.</p>
+                  <app-pricing-plans></app-pricing-plans>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>

@@ -1,0 +1,223 @@
+<div class="header-wrap">
+    <app-header [replacePageTitle]="customPageTitle"></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="container section-content private-pages-sides-wrap">
+      <div class="row no-gutters">
+        <div class="col-12 col-xl-3">
+          <app-user-menu></app-user-menu>
+        </div>
+        <div class="col-12 col-xl-9">
+          <div class="private-pages-right-side-wrap">
+
+            <div *ngIf="!drawData.length && !isLoadingDraws">
+
+              <div *ngIf="authService.isSubscribed()">
+                <div class="private-pages-info-text mt-3 text-center">The list is empty.</div>
+                <div class="private-pages-info-text mb-3 text-center">We are waiting for the results of your first draw.</div>
+                <div class="text-center"><a class="btn btn-big-green" routerLink="/my-tickets">Check Your Tickets</a></div>
+              </div>
+
+              <div *ngIf="!authService.isSubscribed() && !authService.requestingCurrentSessionData">
+                <div class="private-pages-info-text mt-3 mb-3 text-center">The tickets are waiting for you!</div>
+                <div class="text-center"><a class="btn btn-big-green" routerLink="/subscription-plan">Start a subscription</a></div>
+                <div class="private-pages-info-text mt-3 mb-3 text-center">and get reserved tickets!</div>
+              </div>
+
+            </div>
+
+            <div *ngIf="!!drawData.length">
+              <div class="section" *ngIf="!detailsActive">
+                <div class="position-relative">
+                  <span *ngIf="isLoadingDraws" class="icon-loader"><fa name="circle-o-notch" size="2x" animation="spin"></fa></span>
+                  <!-- <div *ngIf="!!drawData.length"> -->
+                  <div *ngIf="drawData.length != 0">
+                    <div class="mb-2 results-intro-title">Click on each row to view the results</div>
+                    <table class="table-custom-1 table--responsive may-load my-results-table" [class.is-loading]="isLoadingDraws">
+                      <thead>
+                        <tr>
+                          <th>Lottery</th>
+                          <th>Draw date</th>
+                          <th>Draw Numbers</th>
+                          <th>My Results</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let row of drawData" (click)="showDetails(row.id)"> 
+                          <td data-heading="Lottery">
+                            {{row.lottery_name}}
+                          </td>
+                          <td data-heading="Draw date">
+                            {{row.local_datetime | unifyDate | date: 'mediumDate'}}
+                          </td>
+                          <td data-heading="Draw Numbers">
+                            <span
+                              *ngFor="let ball of row.result.balls"
+                              [ngClass] = '{"result-ball": true, hit: ball.hit, special: ball.special}'
+                            >{{ball.number}}</span>
+                          </td>
+                          <td data-heading="My results"> 
+                            <span>Show my results ></span>
+                          </td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                    <div class="mt-2 text-center"><a class="action-link" (click)="loadMoreDraws()" *ngIf="loadMoreActive || !drawData.length">Load more</a></div>
+                  </div>
+                </div>
+                <!-- <div class="mt-2">
+                  <ul class="pagination list-reset row no-gutters justify-content-end">
+                    <li class="active"><fa name="angle-double-left"></fa></li>
+                    <li><fa name="angle-left"></fa></li>
+                    <li class="active col-auto">1</li>
+                    <li class="active col-auto">2</li>
+                    <li><fa name="angle-right"></fa></li>
+                    <li><fa name="angle-double-right"></fa></li>
+                  </ul>
+                </div> -->
+              </div>
+              <div class="section" *ngIf="detailsActive">
+                <div class="text-right mb-3"><a (click)="hideDetails()" class="action-link"><fa name="chevron-left"></fa>Go back to draws list </a></div>
+                <div class="position-relative">
+                  <span *ngIf="detailsLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+                  <div class="may-load" [class.is-loading]="detailsLoading">
+                    <table class="table-custom-1 table--responsive result-details-table mb-3">
+                      <thead>
+                        <tr>
+                          <th>Lottery</th>
+                          <th>Draw date</th>
+                          <th>Best Result</th>
+                          <th>Total Wins</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td data-heading="Lottery">{{chosenDrawData?.lottery_name}}</td>
+                          <td data-heading="Draw date">{{chosenDrawData?.local_datetime | unifyDate | date: 'mediumDate'}}</td>
+                          <td data-heading="Best Result"> 
+                            <span *ngIf="getBestResultsFromTickets(drawTicketsData) != null">{{getBestResultsFromTickets(drawTicketsData).match}}</span>
+                            <span *ngIf="getBestResultsFromTickets(drawTicketsData) == null">--</span>
+                          </td>
+                          <td data-heading="Total Wins">{{getTotalTicketsPrizes(drawTicketsData) | number: '1.2-2' }} {{chosenDrawData?.currency}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+      
+                    <div class="result-details-cards">
+                      <div class="card-bg">
+                        <div class="heading">
+                          <div class="row justify-content-between">
+                            <div class="col-auto"><div class="title">Draw Result</div></div>
+                            <div class="col-auto">
+                              <a class="action-link" [appPopUp]='{openContentOnClick: true}'>
+                                See prize list <fa name="chevron-right"></fa>
+                                <div class="app-pop-up">
+                                  <div class="popup-wrap">
+                                    <div class="overflow">
+                                      <div class="prize-list-wrap">
+                                        <div class="title">Prize list - {{chosenDrawData?.lottery_name}} {{chosenDrawData?.local_datetime | unifyDate | date: 'mediumDate'}}</div>
+                                        <table class="table-custom-1 table--responsive">
+                                          <thead>
+                                            <tr>
+                                              <th>Matches</th>
+                                              <th>{{chosenDrawData?.special_name}}</th>
+                                              <th>Win</th>
+                                              <th>Winners</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr *ngFor="let prizeObj of chosenDrawData?.matches">
+                                              <td data-heading="Matches">{{prizeObj?.numbers_match}}</td>
+                                              <td [attr.data-heading]="chosenDrawData?.special_name">{{prizeObj?.specials_match}}</td>
+                                              <td data-heading="Win">{{prizeObj?.prize}} {{chosenDrawData?.currency}}</td>
+                                              <td data-heading="Winners">{{prizeObj?.winners}}</td>
+                                            </tr>
+                                            
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    <span class="close close-box">&times;</span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="draw-line {{chosenDrawData?.lottery_type}} mb-2">
+                            <span 
+                            *ngFor = "let ball of chosenDrawData?.result.balls"
+                            class="result-ball"
+                            [ngClass] = '{match: true, special: ball.special}'
+                          >{{ball.number}}</span>
+                        </div>
+                      </div>
+                      <div class="card-bg">
+                        <div class="heading">
+                          <div class="title">Your Result</div>
+                        </div>
+
+                        <div class="mb-2"
+                                *ngFor = "let detailsData of drawTicketsData; let i = index"
+                        >
+                          <hr class="light d-md-none" *ngIf="i > 0" />
+                          <p class="d-md-none">Syndicate {{detailsData?.syndicate.name}}</p>
+                          <table class="your-result-details-table table--responsive">
+                            <thead>
+                              <tr>
+                                <th class="title">Syndicate {{detailsData?.syndicate.name}}</th>
+                                <th class="title">Matches</th>
+                                <th class="title">{{chosenDrawData?.special_name}}</th>
+                                <th class="title">Win</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let line of detailsData?.lines">
+                                <td>
+
+                                  <div class="draw-line {{chosenDrawData?.lottery_type}}">
+                                      <span
+                                      *ngFor = "let ball of line.balls"
+                                      class="result-ball"
+                                      [ngClass] = '{match: ball.hit, special: ball.special}'
+                                    >{{ball.number}}</span>
+                                  </div>
+                                </td>
+                                <td data-heading="Matches" class="resizable-ticket-result-col">
+                                  <span *ngIf="line.numbers_match">{{line.numbers_match}}</span>
+                                  <span *ngIf="!line.numbers_match">--</span>
+                                </td>
+                                <td [attr.data-heading]="chosenDrawData?.special_name" class="resizable-ticket-result-col">
+                                  <span *ngIf="line.specials_match">{{line.specials_match}}</span>
+                                  <span *ngIf="!line.specials_match">--</span>
+                                </td>
+                                <td data-heading="Win" class="resizable-ticket-result-col">
+                                  <span *ngIf="line.prize">{{line.prize | number: '1.2-2'}} {{chosenDrawData?.currency}}</span>
+                                  <span *ngIf="!line.prize">--</span>
+                                </td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>

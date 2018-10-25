@@ -1,0 +1,127 @@
+.top-brief-reg-package {
+  background: #f1f3d9;
+  border-radius: 10px;
+  color: rgb(82, 82, 82);
+  font-weight: 300;
+  position: relative;
+  margin-bottom: 14px;
+  .top-reg-header {
+    background: linear-gradient(rgb(163, 174, 0) 0%, rgb(210,196, 2) 100%);
+    font-weight: 600;
+    color: white;
+    font-size: 20px;
+    padding: 4px 22px;
+    text-transform: uppercase;
+    position: relative;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .top-reg-body {
+    padding: 8px 22px 10px;
+    display: flex;
+    justify-content: flex-start;
+    .top-reg-body-left {
+      width: 40%;
+      min-width: 220px;
+      font-size: 14px;
+      line-height: 26px;
+      .top-reg-padded-left {
+        padding-left: 10px;
+        line-height: 22px;
+      }
+    }
+    .top-reg-body-right {
+      font-size: 16px;
+      line-height: 26px;
+      .top-reg-regular-price {
+        .price-amount {
+          .price-number {
+            font-size: 1.2em;
+          }
+        }
+      }
+      .top-reg-discount-value {
+        font-weight: 500;
+        .price-amount {
+          color: rgb(200, 75, 91);
+          .price-number {
+            font-size: 1.3em;
+          }
+        }
+        .price-reduction-info {
+          color: rgb(200, 75, 91);
+          font-size: 0.85em;
+          text-transform: uppercase;
+          font-weight: 400;
+        }
+      }
+      .top-reg-real-price {
+        font-weight: 500;
+        .price-amount {
+          color: rgb(163, 147, 0);
+          .price-number {
+            font-size: 1.3em;
+          }
+        }
+      }
+      .top-reg-vat-included-info {
+        font-weight: 300;
+        line-height: 1em;
+        font-size: 0.75em;
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .top-brief-reg-package {
+    .top-reg-body {
+      flex-direction: column;
+      padding-bottom: 18px;
+      .top-reg-body-left {
+        order: 3;
+      }
+      .top-reg-spacer {
+        margin: 8px -12px;
+        background: rgba(0, 0, 0, 0.2);
+        height: 1px;
+        width: calc(100% + 24px);
+        order: 2;
+      }
+      .top-reg-body-right {
+        order: 1;
+      }
+    }
+  }
+}
+@media (max-width: 370px) {
+  .top-brief-reg-package {
+    .top-reg-body {
+      .top-reg-body-right {
+        font-size: 14px;
+        .top-reg-discount-value {
+          .price-reduction-info {
+            text-transform: none;
+          }
+        }
+      }
+    }
+  }
+}
+@media (min-width: 371px) and (max-width: 768px) {
+  .top-brief-reg-package {
+    .top-reg-body {
+      .top-reg-body-left {
+        font-size: 16px;
+      }
+    }
+  }
+}
+@media (min-width: 769px) {
+  .top-brief-reg-package {
+    .top-reg-body {
+      .top-reg-spacer {
+        display: none;
+      }
+    }
+  }
+}

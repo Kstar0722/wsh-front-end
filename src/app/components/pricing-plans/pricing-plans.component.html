@@ -1,0 +1,205 @@
+
+
+<div class="row align-items-center" *ngIf="!changeConfirmationVisible">
+
+  <div class="col-lg-4" *ngFor="let planName of Object.keys(plans)" [ngClass]="{'mobile-show-more': plans[planName]?.planVars.showMoreOnMobile}">
+    <div class="position-relative">
+      <span *ngIf="plansServiceRef.plansLoading || planIsChanging" class="icon-loader text-white"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+      <div class="plan-card plan-card-{{planName | lowercase}} may-load" [ngClass]="{'is-loading': plansServiceRef.plansLoading || planIsChanging, 'is-trial': plansServiceRef.isTrial(), 'is-next-renewal': isNextRenewalPlan(planName)}">
+        <div class="card-title text-{{planName | lowercase}}">{{plans[planName]?.planVars.chances}} chances</div>
+
+        <div class="card-subtitle" *ngIf="plans[planName].planVars.reduction == 0">only <span class="font-weight-bold text-{{planName | lowercase}}">{{plans[planName]?.planVars.costPerWeek}}</span> per week</div>
+        <div class="card-subtitle" *ngIf="plans[planName].planVars.reduction != 0"><span class="strikethrough font-weight-bold text-{{planName | lowercase}}"><span [innerHTML]="plans[planName]?.planVars.currencySymbol"></span>{{plans[planName]?.planVars.originalPrice}} for {{plans[planName]?.planVars.weeks}} weeks</span></div>
+        <!-- <div *ngIf='!plansServiceRef.isTrial()'> -->
+        <div class="card-syndicates-amount text-{{planName | lowercase}}">{{plans[planName]?.planVars.syndicates}} <span *ngIf="plans[planName]?.planVars.syndicates == 1">syndicate</span><span *ngIf="plans[planName]?.planVars.syndicates != 1">syndicates</span></div>
+        <div class="plan-includes for-mobile">
+          <div class="plan-includes-title">
+            {{(plans[planName]?.planVars.lotteryLines.euromillions + plans[planName]?.planVars.lotteryLines.megamillions)*plans[planName]?.planVars.weeks*plans[planName]?.planVars.weeklyDraws}} lottery lines
+            (<span (click)="showMoreInfoToggle(plans[planName])" class="toggle-details">
+              <span *ngIf="!plans[planName]?.planVars.showMoreOnMobile">See more</span>
+              <span *ngIf="plans[planName]?.planVars.showMoreOnMobile">See less</span>
+            </span>)
+          </div>
+        </div>
+        <div class="card-stars">
+          <img *ngFor="let i of array0to(plans[planName]?.planVars.syndicates)" src="/assets/images/star-{{planName | lowercase}}.png" alt="">
+        </div>
+        <!-- </div> -->
+        <div class="plan-odds" *ngIf="plans[planName].planVars.reduction == 0">
+          <ul class="list-reset list-simple-checked">
+            <li>{{plans[planName]?.planVars.improvedOdds}}x Improved odds</li>
+            <li>{{plans[planName]?.planVars.costPerLine}} per lottery line</li>
+          </ul>
+        </div>
+        <div class="plan-reduction-banner pt-1 pb-1 mt-2 mb-2" *ngIf="plans[planName].planVars.reduction != 0 && plans[planName].planVars.reduction != null">
+            <div class="medium text-uppercase">only <span class="normal"><span [innerHTML]="this.plans[planName].planVars.currencySymbol"></span>{{plans[planName]?.planVars.price}}</span></div>
+            <div class="small">for {{plans[planName]?.planVars.weeks}} weeks</div>
+            <div class="normal text-uppercase">save <span [innerHTML]="plans[planName]?.planVars.currencySymbol"></span>{{plans[planName]?.planVars.reduction}}</div>
+        </div>
+        <div class="plan-includes mobile-more-info" [ngClass]="{'active': plans[planName]?.planVars.showMoreOnMobile}">
+          <div class="plan-includes-title">includes:</div>
+          <ul class="list-reset">
+            <li>
+              <div class="row no-gutters">
+                <div class="col-auto">
+                  <img src="/assets/images/ball-euro-millions.png" alt="">
+                </div>
+                <div class="col-auto">{{plans[planName]?.planVars.lotteryLines.euromillions}} lines x {{plans[planName]?.planVars.weeklyDraws}}
+                  <br />weekly draws</div>
+              </div>
+            </li>
+            <li>
+              <div class="row no-gutters">
+                <div class="col-auto">
+                  <img src="/assets/images/ball-mega-millions.png" alt="">
+                </div>
+                <div class="col-auto">{{plans[planName]?.planVars.lotteryLines.megamillions}} lines x {{plans[planName]?.planVars.weeklyDraws}}
+                  <br />weekly draws</div>
+              </div>
+            </li>
+            <li>
+              <div class="row no-gutters">
+                <div class="col-auto">
+                  <img src="/assets/images/ball-power-ball.png" alt="">
+                </div>
+                <div class="col-auto" *ngIf="plans[planName]?.planVars.lotteryLines.powerball == 0">5 weeks free <br />per referral</div>
+                <div class="col-auto" *ngIf="plans[planName]?.planVars.lotteryLines.powerball > 0">{{plans[planName]?.planVars.lotteryLines.powerball}} FREE <br />PowerBall lines</div>
+              </div>
+            </li>
+          </ul>
+          <div class="plan-odds" *ngIf="plans[planName].planVars.reduction != 0">
+            <ul class="list-reset list-simple-checked">
+              <li>{{plans[planName]?.planVars.improvedOdds}}x Improved odds</li>
+              <li>{{plans[planName]?.planVars.costPerLine}} per lottery line</li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-center">
+          <!-- {{isNextRenewalPlan(planName) | json}} -->
+          <div *ngIf="authService.isLoggedIn()">
+            <button 
+              class="button-{{planName}}" 
+              (click)="planSelect(planName)"
+              *ngIf="!authService.isSubscribed()"
+            >
+              <span>Select {{planName}}</span>
+            </button>
+            <button 
+              class="button-{{planName}}" 
+              (click)="showChangeConfirmation(planName)"
+              *ngIf="authService.isSubscribed() && !authService.user?.packages[0].auto_renewal && !isCurrentPlan(planName)"
+            >
+              <span>Select {{planName}}</span>
+            </button>
+            <button 
+              class="button-{{planName}}" 
+              (click)="showChangeConfirmation(planName)"
+              *ngIf="authService.isSubscribed() && !authService.user?.packages[0].auto_renewal && isCurrentPlan(planName)"
+              [disabled]= "activatingRenewal"
+            >
+              <span>Activate recurrence</span>
+            </button>
+            <div *ngIf="authService.isSubscribed() && authService.user?.packages[0].auto_renewal">
+              <button 
+                class="button-{{planName}}" 
+                (click)="showChangeConfirmation(planName)" 
+                *ngIf="!isNextRenewalPlan(planName)"
+              >
+                <span>Change to {{planName}}</span>
+              </button>
+              
+            </div>
+            
+          </div>
+          
+          <button 
+            class="button-{{planName}}" 
+            (click)="planSelect(planName)" 
+            *ngIf="!authService.isLoggedIn()"
+          >
+            <span *ngIf="!plansServiceRef.isTrial()">
+              Select {{planName}}
+            </span>
+            <span *ngIf="plansServiceRef.isTrial()">
+              Trial for <span [innerHTML]="plans[planName]?.planVars.currencySymbol"></span>{{plans[planName]?.planVars.price}}
+            </span>
+          </button>
+          <div *ngIf="isCurrentPlan(planName) && !isNextRenewalPlan(planName)">
+            <div class="next-subscription-confirmation-spacer"></div>
+            <div class="next-subscription-confirmation">
+              <div class="row no-gutters align-items-center justify-content-center">
+                <fa name="check-circle" class="col-auto"></fa>
+                <span class="col-auto">You have this plan</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="isNextRenewalPlan(planName)">
+            <div class="next-subscription-confirmation-spacer"></div>
+            <div class="next-subscription-confirmation">
+              <div class="row no-gutters align-items-center justify-content-center">
+                <fa name="check-circle" class="col-auto"></fa>
+                <span class="col-auto">Your plan in the next <br>subscription period</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row" *ngIf="showDisclaimer">
+  <div class="text-center col-12 font-lg-smaller mb-2"
+       [class.pricing-disclaimer-highlight]="highlightDisclaimer"
+       [class.font-weight-light]="!highlightDisclaimer"
+  >
+    Your account is set to auto-renew, so you never miss a draw.<br />
+    Payment will recur every four weeks at full price. Cancel anytime.
+  </div>
+</div>
+
+<div class="align-items-center" *ngIf="changeConfirmationVisible">
+  <div class="text-right mb-3"><a (click)="hideChangeConfirmation()" class="action-link"><fa name="chevron-left"></fa> Go back</a></div>
+  <div class="private-pages-info-text mt-0 mb-2 text-center">Subscription plan since next period</div>
+  <div class="plan-card plan-card-confirmation">
+    <div class="card-title mb-2">The new plan - {{confirmPlanToChange}}</div>
+    <div class="card-subtitle">only <span class="font-weight-bold">{{plans[confirmPlanToChange]?.planVars.costPerWeek}}</span> per week</div>
+    <div>({{plans[confirmPlanToChange]?.planVars.costPerLine}} per lottery line)</div>
+    <div class="card-syndicates-amount">{{plans[confirmPlanToChange]?.planVars.syndicates}} <span *ngIf="plans[confirmPlanToChange]?.planVars.syndicates == 1">syndicate</span><span *ngIf="plans[confirmPlanToChange]?.planVars.syndicates != 1">syndicates</span></div>
+    <div class="card-stars">
+      <img *ngFor="let i of array0to(plans[confirmPlanToChange]?.planVars.syndicates)" src="/assets/images/star-{{confirmPlanToChange | lowercase}}.png" alt="">
+    </div>
+    <div class="plan-includes mt-3">
+      <div class="plan-includes-title">includes:</div>
+      <ul class="list-reset">
+        <li>
+          <div class="row no-gutters">
+            <div class="col-auto">
+              <img src="/assets/images/ball-euro-millions.png" alt="">
+            </div>
+            <div class="col-auto">{{plans[confirmPlanToChange]?.planVars.lotteryLines.euromillions}} lines x {{plans[confirmPlanToChange]?.planVars.weeklyDraws}}
+              <br />weekly draws</div>
+          </div>
+        </li>
+        <li>
+          <div class="row no-gutters">
+            <div class="col-auto">
+              <img src="/assets/images/ball-mega-millions.png" alt="">
+            </div>
+            <div class="col-auto">{{plans[confirmPlanToChange]?.planVars.lotteryLines.megamillions}} lines x {{plans[confirmPlanToChange]?.planVars.weeklyDraws}}
+              <br />weekly draws</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <p><strong>Subscription plan will be activated in the next subscription period, since {{authService.user?.packages[0].end_datetime | unifyDate | date: 'mediumDate'}}</strong></p>
+    <button 
+      class="btn btn-wire-small btn-renewal" 
+      (click)="confirmPlanChange()"
+    >
+      <span>Change your subscription plan</span>
+    </button>
+  </div>
+  
+</div>

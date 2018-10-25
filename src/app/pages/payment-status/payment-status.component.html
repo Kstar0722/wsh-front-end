@@ -1,0 +1,143 @@
+<div class="header-wrap">
+    <app-header [replacePageTitle] = replacePageTitle></app-header>
+    <div class="page-banner-content">
+      <div class="container text-white"></div>
+    </div>
+  </div>
+  
+  <div class="content-wrap">
+    <div class="section">
+
+      <div class="section-content position-relative">
+        <div class=" box-sup-gray pt-3 pb-3 pt-md-5 pb-md-5">
+          <span *ngIf="isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+  
+          <div class="container container-narrow may-load" [class.is-loading]="isLoading">
+            <div *ngIf="paymentData?.payment.success == '1' && !cardRenewal">
+              <div class="payment-st-message payment-st-message-success text-center">
+                <!-- <img src="/assets/images/circle-check.png" alt="">
+                <div class="title">You are now part of a <span class="bold">WSHFUL</span> lottery syndicate.</div> -->
+                <p class="title">Dear {{authServiceRef.user?.first_name}},</p>
+                <p><strong>Congratulations, you are now part of the Wshful Syndicate.  As a syndicate member you will be in ever draw for your lotteries.</strong></p>
+                <p class="mt-4">The draws take place:</p>
+                <div class="row">
+                  <div class="col">
+                    <div><img src="/assets/images/ball-euro-millions.png" alt=""></div>
+                    <div><strong>EuroMillions</strong></div>
+                    <div>Tuesday and Friday</div>
+                  </div>
+                  <div class="col">
+                    <div><img src="/assets/images/ball-mega-millions.png" alt=""></div>
+                    <div><strong>Mega Millions</strong></div>
+                    <div>Tuesday and Friday</div>
+                  </div>
+                  <div class="col">
+                    <div><img src="/assets/images/ball-power-ball.png" alt=""></div>
+                    <div><strong>PowerBall</strong></div>
+                    <div>Wednesday and Saturday</div>
+                  </div>
+                </div>
+                <div class="mt-5">
+                  <p class="mb-0"><a class="go-to-dashboard-link" routerLink="/dashboard">Login to My Dashboard</a> anytime to manage your account.</p>
+                  <p class="mt-0"><strong>Best of luck for the coming draws!!</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="paymentData?.payment.success == '1' && cardRenewal">
+              <div class="payment-st-message payment-st-message-success text-center">
+                <p class="title">Thank you,</p>
+                <p *ngIf="authService.isSubscribed()"><strong>You have successfully changed your payment card and your subscription payment was extended until {{authService.user?.packages[0].end_datetime | unifyDate | date: 'MMM d, y'}}.</strong></p>
+                <p class="mt-4">The draws take place:</p>
+                  <div class="row">
+                    <div class="col">
+                      <div><img src="/assets/images/ball-euro-millions.png" alt=""></div>
+                      <div><strong>EuroMillions</strong></div>
+                      <div>Tuesday and Friday</div>
+                    </div>
+                    <div class="col">
+                      <div><img src="/assets/images/ball-mega-millions.png" alt=""></div>
+                      <div><strong>Mega Millions</strong></div>
+                      <div>Tuesday and Friday</div>
+                    </div>
+                    <div class="col">
+                      <div><img src="/assets/images/ball-power-ball.png" alt=""></div>
+                      <div><strong>PowerBall</strong></div>
+                      <div>Wednesday and Saturday</div>
+                    </div>
+                  </div>
+                  <div class="mt-5">
+                    <p><strong>Best of luck for the coming draws!!</strong></p>
+                    <p><a class="button-1" routerLink="/dashboard"><span class="button-1-inner">Login to My Dashboard</span></a></p>
+                  </div>
+              </div>
+            </div>
+
+            <div *ngIf="paymentData?.payment.success == '0'">
+              <div class="payment-st-message payment-st-message-fail text-center">
+                <img src="/assets/images/circle-x.png" alt="">
+                <div class="messages">
+
+                  <div class="message" *ngIf="paymentData?.fault == 'user' && paymentData?.fault_variation == 2">
+                    <div class="title">It looks like your card has been declined.</div>
+                    <p>We have been unable to process your payment.</p>
+                    <p><a class="button-1" (click)="tryAgain()"><span class="button-1-inner">TRY AGAIN</span></a></p>
+                    <p>If you wish to contact us you can email us at <a href="mailto:support@wshful.com"><span class="bold">support@wshful.com</span></a> or call us during UK office hours on <a href="tel:+44 (0) 207 1833109"><span class="bold">+44 (0) 207 1833109</span></a>.</p>
+                  </div>
+
+                  <div class="message" *ngIf="paymentData?.fault == 'user' && paymentData?.fault_variation == 3">
+                    <div class="title">It looks like your card has been declined.</div>
+                    <p><a class="button-1" (click)="tryAgain()"><span class="button-1-inner">TRY AGAIN</span></a></p>
+                    <p>If you wish to contact us you can email us at <a href="mailto:support@wshful.com"><span class="bold">support@wshful.com</span></a> or call us during UK office hours on <a href="tel:+44 (0) 207 1833109"><span class="bold">+44 (0) 207 1833109</span></a>.</p>
+                  </div>
+
+                  <div class="message" *ngIf="paymentData?.fault == 'user' && paymentData?.fault_variation == 4">
+                    <div class="title">It looks like your card has been declined.</div>
+                    <p>We have been unable to process your payment as your account shows insufficient funds. Please check your details and again or try a different card at our payment processing page.</p>
+                    <p><a class="button-1" (click)="tryAgain()"><span class="button-1-inner">TRY AGAIN</span></a></p>
+                    <p>If you wish to contact us you can email us at <a href="mailto:support@wshful.com"><span class="bold">support@wshful.com</span></a> or call us during UK office hours on <a href="tel:+44 (0) 207 1833109"><span class="bold">+44 (0) 207 1833109</span></a>.</p>
+                  </div>
+
+                  <div class="message" *ngIf="paymentData?.fault == 'user' && paymentData?.fault_variation == 1">
+                    <div class="title">It looks like your card has been declined.</div>
+                    <p>Please try again either with the same card while ensuring your cards details are correct or try a different card at our payment processing page.</p>
+                    <p><a class="button-1" (click)="tryAgain()"><span class="button-1-inner">TRY AGAIN</span></a></p>
+                    <p>In the meantime, if you wish to contact us you can email us at <a href="mailto:support@wshful.com"><span class="bold">support@wshful.com</span></a> or call us during UK office hours on <a href="tel:+44 (0) 207 1833109"><span class="bold">+44 (0) 207 1833109</span></a>.</p>
+                  </div>
+
+                  <div class="message" *ngIf="paymentData?.fault == 'admin' && paymentData?.fault_variation == 1">
+                    <div class="title">We have not been able to process your payment.</div>
+                    <p>Please try again either with the same card while ensuring your cards details are correct or try a different card at our payment processing page.</p>
+                    <p><a class="button-1" (click)="tryAgain()"><span class="button-1-inner">TRY AGAIN</span></a></p>
+                    <p>In the meantime, if you wish to contact us you can email us at <a href="mailto:support@wshful.com"><span class="bold">support@wshful.com</span></a> or call us during UK office hours on <a href="tel:+44 (0) 207 1833109"><span class="bold">+44 (0) 207 1833109</span></a>.</p>
+                  </div>
+
+                  <div class="message" *ngIf="paymentData?.fault == 'unknown' && paymentData?.fault_variation == 1">
+                    <div class="title">We have not been able to process your payment.</div>
+                    <p>Please try again either with the same card while ensuring your cards details are correct or try a different card at our payment processing page.</p>
+                    <p><a class="button-1" (click)="tryAgain()"><span class="button-1-inner">TRY AGAIN</span></a></p>
+                    <p>In the meantime, if you wish to contact us you can email us at <a href="mailto:support@wshful.com"><span class="bold">support@wshful.com</span></a> or call us during UK office hours on <a href="tel:+44 (0) 207 1833109"><span class="bold">+44 (0) 207 1833109</span></a>.</p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+        
+
+      </div>
+      
+
+      
+    </div>
+    
+  </div>
+  
+  <div class="footer-wrap">
+    <app-footer></app-footer>
+  </div>
+    
+  

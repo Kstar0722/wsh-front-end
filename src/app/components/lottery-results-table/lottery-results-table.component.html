@@ -1,0 +1,82 @@
+
+<table class="results-table">
+    <thead>
+        <th>
+        </th>
+        <th>
+            <img src="/assets/images/logo-euromillions-color.png" alt="">
+            <div>Euro Millions</div>
+        </th>
+        <th>
+            <img src="/assets/images/logo-megamillions-color.png" alt="">
+            <div>Mega Millions</div>
+        </th>
+        <th>
+            <img src="/assets/images/logo-powerball-color.png" alt="">
+            <div>Power Ball</div>
+        </th>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let row of drawData">
+            <td class="date">
+                <div class="month"><span *ngFor="let month of row.datesObj.months">{{month}}<span class="separator" *ngIf="row.datesObj.months.length-1 > row.datesObj.months.indexOf(month)"> - </span></span></div>
+                <div class="day"><span *ngFor="let day of row.datesObj.days">{{day}}<span class="separator" *ngIf="row.datesObj.days.length-1 > row.datesObj.days.indexOf(day)"> - </span></span></div>
+                <div class="year"><span *ngFor="let year of row.datesObj.years">{{year}}<span class="separator" *ngIf="row.datesObj.years.length-1 > row.datesObj.years.indexOf(year)"> - </span></span></div>
+            </td>
+            <td [class.no-results]="row.group.euromillions == null">
+                <div *ngIf="row.group.euromillions != null">
+                    <div class="cell-lottery-name">Euro Millions</div>
+                    <div class="cell-draw-date">{{row.group.euromillions.local_datetime | unifyDate | date: 'mediumDate'}}</div>
+                    <span *ngIf="row.group.euromillions.result != null">
+                        <span *ngFor="let ball of row.group.euromillions.result.balls" [ngClass] = "{'result-ball': true, 'special': ball.special, 'hit': ball.hit}">
+                            {{ball.number}}
+                        </span>
+                    </span>
+                </div>
+            </td>
+            <td [class.no-results]="row.group.megamillions == null">
+                <div *ngIf="row.group.megamillions != null">
+                    <div class="cell-lottery-name">Mega Millions</div>
+                    <div class="cell-draw-date">{{row.group.megamillions.local_datetime | unifyDate | date: 'mediumDate'}}</div>
+                    <span *ngIf="row.group.megamillions.result != null">
+                        <span *ngFor="let ball of row.group.megamillions.result.balls" [ngClass] = "{'result-ball': true, 'special': ball.special, 'hit': ball.hit}">
+                            {{ball.number}}
+                        </span>
+                    </span>
+                </div>
+            </td>
+            <td [class.no-results]="row.group.powerball == null">
+                <div *ngIf="row.group.powerball != null">
+                    <div class="cell-lottery-name">Power Ball</div>
+                    <div class="cell-draw-date">{{row.group.powerball.local_datetime | unifyDate | date: 'mediumDate'}}</div>
+                    <span *ngIf="row.group.powerball.result != null">
+                        <span *ngFor="let ball of row.group.powerball.result.balls" [ngClass] = "{'result-ball': true, 'special': ball.special, 'hit': ball.hit}">
+                            {{ball.number}}
+                        </span>
+                    </span>
+                </div>
+            </td>
+
+        </tr>
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                <button type="button" class="btn" (click)="requestNextDraws()" [disabled]="isLoading">
+                    &nbsp;
+                    <span *ngIf="!isLoading">View more results</span>
+                    <span *ngIf="isLoading" class="icon-loader text-white"><fa name="circle-o-notch" size="1x" animation="spin"></fa></span>
+                    &nbsp;
+                </button>
+            </td>
+            <td class="text-right">
+                <span *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Log in</a> to check your results </span>
+                <span *ngIf="authService.isLoggedIn()">Check <a routerLink="/my-results">your results</a></span>
+            </td>
+        </tr>
+    </tfoot>
+</table>

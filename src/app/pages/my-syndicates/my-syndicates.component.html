@@ -1,0 +1,76 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="container section-content private-pages-sides-wrap">
+    <div class="row no-gutters">
+      <div class="col-12 col-xl-3">
+        <app-user-menu></app-user-menu>
+      </div>
+      <div class="col-12 col-xl-9">
+        <div class="private-pages-right-side-wrap">
+
+          <div class="position-relative">
+            <span *ngIf="authService.requestingCurrentSessionData || isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+            <div *ngIf="!authService.isSubscribed() && !authService.requestingCurrentSessionData">
+              <div class="private-pages-info-text mt-3 mb-3 text-center">You need to be a subscriber to activate a membership.</div>
+              <div class="text-center"><a class="btn btn-big-green btn-big-green-wire" routerLink="/subscription-plan">See subscription plans</a></div>
+            </div>
+  
+            <div *ngIf="authService.isSubscribed()">
+  
+              <div class="row pr-md-1 pl-md-1 syndicates-cards may-load" [class.is-loading]="isLoading">
+                <div class="col-md subscribed-syndicates">
+                  <div class="title">Subscribed Syndicates</div>
+                  <div class="subtitle">
+                    <a routerLink="/subscription-plan">Your subscription plan</a>
+                  </div>
+                  <div class="card-bg" *ngFor="let membership of memberships | syndicateSeparator: 'standard'">
+                    <div class="syndicate-name">Syndicate {{membership.syndicate.name}}</div>
+                    <div class="syndicate-started row justify-content-between">
+                      <div class="col-auto">Membership started</div>
+                      <div class="col-auto">{{membership.start_datetime | unifyDate | date: 'mediumDate'}}</div>
+                    </div>
+                    <div class="syndicate-renewal row justify-content-between">
+                      <div class="col-auto">
+                        <span *ngIf="authService?.user?.packages[0].auto_renewal">Next Renewal</span>
+                        <span *ngIf="!authService?.user?.packages[0].auto_renewal">Subscription End</span>
+                      </div>
+                      <div class="col-auto">{{membership.finish_datetime | unifyDate | date: 'mediumDate'}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md bonus-syndicates">
+                  <div class="title">Bonus Syndicates</div>
+                  <div class="subtitle">
+                    <a routerLink="/my-bonuses">Your bonuses</a>
+                  </div>
+                  <div class="card-bg" *ngFor="let membership of memberships | syndicateSeparator: 'bonus'">
+                    <div class="syndicate-name">Bonus Syndicate {{membership.syndicate.name}}</div>
+                    <div class="syndicate-started row justify-content-between">
+                      <div class="col-auto">Membership started</div>
+                      <div class="col-auto">{{membership.start_datetime | unifyDate | date: 'mediumDate'}}</div>
+                    </div>
+                    <div class="syndicate-renewal row justify-content-between">
+                      <div class="col-auto">Membership Expires</div>
+                      <div class="col-auto">{{membership.finish_datetime | unifyDate | date: 'mediumDate'}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>

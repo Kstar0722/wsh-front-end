@@ -1,0 +1,40 @@
+<!-- 
+<h2 class="section-title lottery-prizes-title-text">lottery prizes & odds</h2> -->
+<img class="lottery-prizes-title-image" src="/assets/images/lottery-prizes-title-img.png" alt="">
+<div class="lottery-prizes">
+  <p class="mb-3 mt-1 text-center">Please check below the prizes and odds for each lottery.</p>
+  
+  <div class="slick-slider-arrows-fake-wrapper">
+    <i (click)="prevTab();" class="fa fa-chevron-left arrow-left slick-arrow slick-arrow-fake" [class.slick-disabled]="boundaries.left" ></i>
+    <ngx-slick-carousel #slickTabs="slick-carousel" class="carousel-tabs slick-slider-arrows-wrapper" [config]='carouselOptsTabs' (afterChange)="slickChanges($event)">
+      <div ngxSlickItem *ngFor = "let tab of tabData; let i = index;" (click)='tabClick($event.currentTarget)' [ngClass]="{'selected': selectedTabIndex == i}">
+        <div class="slide-inner text-center">
+          <div><img src="{{tab.tabImage}}" alt=""></div>
+          <div class="title">{{tab.tabTitle}}</div>
+        </div>
+      </div>
+    </ngx-slick-carousel>
+    <i (click)="nextTab()" class="fa fa-chevron-right arrow-right slick-arrow slick-arrow-fake" [class.slick-disabled]="boundaries.right"></i>
+  </div>
+  <div class="tab-details-wrapper">
+    <div *ngFor="let tab of tabData; let i = index;" [ngClass]="{'tab-details': true, 'selected': selectedTabIndex == i}">
+      <div class="description" [innerHTML]="tab.details.description"></div>
+      <table class="table-custom-1 table--responsive">
+        <thead>
+          <tr>
+            <th>Prize Tier</th>
+            <th>Odds of winning</th>
+            <th>Average Prize</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of tab.details.table">
+            <td data-heading="Prize Tier" class="lottery-prizes-left-padded-special text-left">{{row.prizeTier}}</td>
+            <td data-heading="Odds of winning">{{row.odds}}</td>
+            <td data-heading="Average Prize">{{row.averagePrize}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

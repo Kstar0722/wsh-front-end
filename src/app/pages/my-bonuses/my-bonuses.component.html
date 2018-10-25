@@ -1,0 +1,83 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="container section-content private-pages-sides-wrap">
+    <div class="row no-gutters">
+      <div class="col-12 col-xl-3">
+        <app-user-menu></app-user-menu>
+      </div>
+      <div class="col-12 col-xl-9">
+        <div class="private-pages-right-side-wrap">
+
+          <div class="position-relative">
+            <span *ngIf="isLoading" class="icon-loader"><fa name="circle-o-notch" size="4x" animation="spin"></fa></span>
+            <div class="section section-my-bonuses big-list-items position-relative">
+              <div class="may-load" [class.is-loading]="isLoading">
+                <div class="row-wrap">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      bonus syndicate membership
+                    </div>
+                    <div class="col-sm-5 text-sm-right item-val">
+                        <span *ngIf="bonusData?.bonus_syndicate_membership_datetime">{{bonusData?.bonus_syndicate_membership_datetime | unifyDate | date: 'mediumDate'}}</span>
+                        <span *ngIf="!bonusData?.bonus_syndicate_membership_datetime">---</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row-wrap">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      total time earned in bonus syndicates
+                    </div>
+                    <div class="col-sm-5 text-sm-right item-val">
+                      {{bonusData?.weeks_earned_in_bonus_syndicates}} week(s)
+                    </div>
+                  </div>
+                </div>
+                <div class="row-wrap">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      bonus weeks from referrals
+                    </div>
+                    <div class="col-sm-5 text-sm-right item-val">
+                      {{bonusData?.bonus_weeks_only_from_referrals}} week(s)
+                    </div>
+                  </div>
+                </div>
+                <div class="row-wrap">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      referrals registered
+                    </div>
+                    <div class="col-sm-5 text-sm-right item-val">
+                      {{bonusData?.referrals_registered}} friend(s)
+                    </div>
+                  </div>
+                </div>
+                <div class="row-wrap">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      referrals subscribed
+                    </div>
+                    <div class="col-sm-5 text-sm-right item-val">
+                      {{bonusData?.referrals_subscribed}} friend(s)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>

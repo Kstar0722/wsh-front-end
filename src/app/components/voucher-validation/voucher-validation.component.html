@@ -1,0 +1,27 @@
+<div class="voucher-validation">
+  <div class="voucher-input-wrapper">
+    <input [disabled]="isDisabled" id="voucher" name="voucher" type="text" [(ngModel)]="voucherCode" (keyup)="keyup()" class="w-100" placeholder = 'Voucher code'>
+    <span class="voucher-validation-icon">
+        <div class="col-3" *ngIf="isLoading">
+          <fa name="circle-o-notch" size="1x" animation="spin"></fa>
+        </div>
+        <div class="col-3" *ngIf="isValid && !isLoading && voucherCode != ''" style="color: #849700">
+          <fa name="check" size="1x"></fa>
+        </div>
+        <div class="col-3" *ngIf="!isValid && !isLoading && voucherCode != ''" style="color: #e13140">
+          <fa name="times-circle" size="1x"></fa>
+        </div>
+    </span>
+  </div>
+
+  <div *ngIf="voucherInfo" class="voucher-info">
+    <div class="total">
+      Total: 
+      <span class="strikethrough original-price mr-1"><small class="currency" [innerHTML]="forPlan.planVars.currencySymbol"></small>{{voucherInfo.original_amount}}</span>
+      <span class="price"><small class="currency" [innerHTML]="forPlan.planVars.currencySymbol"></small>{{voucherInfo.amount}}</span>
+    </div>
+    <div>
+      <span class="currency" [innerHTML]="forPlan.planVars.currencySymbol"></span>{{voucherInfo.amount / 4}} per week for 4 weeks
+    </div>
+  </div>
+</div>

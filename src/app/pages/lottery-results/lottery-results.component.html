@@ -1,0 +1,50 @@
+<div class="header-wrap">
+  <app-header></app-header>
+  <div class="page-banner-content">
+    <div class="container text-white"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+  <div class="section section-lottery-results">
+    <div class="container">
+      <div class="section-content">
+        <app-lottery-results-table></app-lottery-results-table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section section-lottery-prizes">
+    <div class="container">
+      <div class="section-content">
+        <app-lottery-prizes></app-lottery-prizes>
+      </div>
+    </div>
+  </div>
+
+  <div class="section join-wshful-banner">
+    <div class="container">
+      <div class="section-content text-center">
+        <div class="mb-2">
+          Join thousands of players
+          <br /> and increase your lottery odds today!
+        </div>
+        <div>
+          <a routerLink="/register" class="button-1"><span class="button-1-inner">Join Now</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section section-testimonials-carousel has-red-quote">
+    <div class="section-content section-content-thick-top">
+      <div class="container">
+        <app-testimonials-carousel limit="10"></app-testimonials-carousel>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <app-footer></app-footer>
+</div>
+  

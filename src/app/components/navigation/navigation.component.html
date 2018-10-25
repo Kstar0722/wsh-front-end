@@ -1,0 +1,30 @@
+<!-- <pre>{{navObjects | json}}</pre> -->
+<ul class="row justify-content-end no-gutters level-1">
+  <li class="col-12 col-lg-auto" *ngFor="let navObj of navObjects" routerLinkActive="active-link-group">
+
+    <a 
+      routerLinkActive="active-link" 
+      href="#" 
+      routerLink="{{navObj.routerLink}}" 
+      [routerLinkActiveOptions]="{exact: true}" 
+      (click)="pageTplDataService.menuHide()"
+    >
+      {{navObj.pageTitle}}
+    </a>
+
+    <ul *ngIf="navObj.children" class="level-2">
+      <li *ngFor = "let childRoute of navObj.children" routerLinkActive="active-link-group" [style.max-width.%]="100/navObj.children.length">
+
+        <a 
+          routerLinkActive="active-link" 
+          routerLink="{{childRoute.routerLink}}" 
+          [routerLinkActiveOptions]="{exact: true}" 
+          (click)="pageTplDataService.menuHide()"
+        >
+          {{childRoute.pageTitle}}
+        </a>
+
+      </li>
+    </ul>
+  </li>
+</ul>
